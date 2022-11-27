@@ -29,10 +29,12 @@ namespace ShopM4.Controllers
             IEnumerable<Product> objList = db.Product;
 
             // Получаем ссылки на сущности категорий
+            /*
             foreach (var item in objList)
             {
                 item.Category = db.Category.FirstOrDefault(x => x.Id == item.CategoryId);
             }
+            */
 
             return View(objList);
         }
@@ -97,16 +99,26 @@ namespace ShopM4.Controllers
 
                 string extension = Path.GetExtension(files[0].FileName);
 
-                using (var FileStream = new FileStream("", FileMode.Create)) {
+                string path = upload + imageName + extension;
 
+                // Скопируем файл на сервер
+                using (var FileStream = new FileStream(path, FileMode.Create))
+                {
+                    files[0].CopyTo(FileStream);
                 }
+
+                productViewModel.Product.Image = imageName + extension;
+
+                db.Product.Add(productViewModel.Product);
             }
             else
             {
                 // update
+                db.SaveChanges();
             }
 
-            return View();
+            return RedirectToAction("Index");
+            //return View();
         }
     }
 }
