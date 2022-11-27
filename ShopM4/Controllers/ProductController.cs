@@ -83,10 +83,22 @@ namespace ShopM4.Controllers
         // POST CreateEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateEdit(IFormFile file, ProductViewModel productViewModel)
+        public IActionResult CreateEdit(ProductViewModel productViewModel)
         {
+            var files = HttpContext.Request.Form.Files;
+
+            string wwwRoot = webHostEnvironment.WebRootPath;
+
+            if (productViewModel.Product.Id == 0)
+            {
+                // create
+            }
+            else
+            {
+                // update
+            }
+
             return View();
         }
     }
 }
-

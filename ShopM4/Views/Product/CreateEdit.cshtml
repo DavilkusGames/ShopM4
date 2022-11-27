@@ -37,7 +37,7 @@
 
     <p>
         <label asp-for="Product.Image"></label>
-        <input type="file" name="files" class="form-control" multiple />
+        <input type="file" name="files2022" class="form-control" multiple />
     </p>
 
     <p>
@@ -74,7 +74,9 @@
     <script>
         /* editor */
         $(document).ready(function () {
-            $('.summernote').summernote();
+            $('.summernote').summernote({
+                height: 200
+            });
         });
 
         /* alert */
