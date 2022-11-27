@@ -77,6 +77,14 @@ namespace ShopM4.Controllers
                 return View(productViewModel);
             }
         }
+
+        // POST CreateEdit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateEdit(IFormFile file, ProductViewModel productViewModel)
+        {
+            return View();
+        }
     }
 }
 
