@@ -94,6 +94,12 @@ namespace ShopM4.Controllers
                 // create
                 string upload = wwwRoot + PathManager.ImageProductPath;
                 string imageName = Guid.NewGuid().ToString();
+
+                string extension = Path.GetExtension(files[0].FileName);
+
+                using (var FileStream = new FileStream("", FileMode.Create)) {
+
+                }
             }
             else
             {
