@@ -2,5 +2,6 @@
 {
     public class PathManager
     {
+        public static string imageProductPath = @"\images\product\";
     }
 }

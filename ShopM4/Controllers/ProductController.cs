@@ -15,10 +15,12 @@ namespace ShopM4.Controllers
     public class ProductController : Controller
     {
         private ApplicationDbContext db;
+        private IWebHostEnvironment webHostEnvironment;
 
-        public ProductController(ApplicationDbContext db)
+        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             this.db = db;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         // GET INDEX
