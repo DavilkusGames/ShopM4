@@ -92,6 +92,8 @@ namespace ShopM4.Controllers
             if (productViewModel.Product.Id == 0)
             {
                 // create
+                string upload = wwwRoot + PathManager.ImageProductPath;
+                string imageName = Guid.NewGuid().ToString();
             }
             else
             {
