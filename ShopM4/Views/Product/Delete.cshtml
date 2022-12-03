@@ -13,45 +13,27 @@
 
     <p>
         <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" class="form-control" disable/>
     </p>
 
     <p>
-        <label asp-for="Product.Price"></label>
-        <input asp-for="Product.Price" class="form-control" />
-        <span asp-validation-for="Product.Price" class="text-danger"></span>
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" disabled/>
     </p>
 
     <p>
-        <label asp-for="Product.Description"></label>
+        <label asp-for="Description"></label>
         <!--<input asp-for="Product.Description" class="form-control" />-->
-        <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
-        <span asp-validation-for="Product.Description" class="text-danger"></span>
+        <textarea asp-for="Description" class="form-control summernote"></textarea>
     </p>
 
     <p>
-        <label asp-for="Product.Image"></label>
-        <input type="file" name="files2022" class="form-control" multiple />
+        <label asp-for="CategoryId"></label>
+        <input asp-for="Category.Name" class="form-control" disabled />
     </p>
 
     <p>
-        <label asp-for="Product.Id" asp-items="@ViewBag.CategoriesList"></label>
-        <select asp-for="Product.Id" asp-items="@ViewBag.CategoriesList" class="form-control">
-            <option disabled selected>-- Выберите категорию --</option>
-        </select>
-        <span asp-validation-for="Product.Id" class="text-danger"></span>
-    </p>
-
-    <p>
-        @if (Model.Product.Id != 0)
-        {
-            <input type="submit" class="btn btn-success" value="Update" />
-        }
-        else
-        {
-            <input type="submit" onclick="input()" class="btn btn-success" value="Create" />
-        }
-
+        <input type="submit" class="btn btn-danger" value="Delete" />
         <a class="btn btn-primary" asp-controller="Category" asp-action="Index"> Back </a>
     </p>
 
