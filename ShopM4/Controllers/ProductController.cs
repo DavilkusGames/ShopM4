@@ -114,7 +114,16 @@ namespace ShopM4.Controllers
             else
             {
                 // update
-                int a = 12;
+                
+                if (files.Count > 0)
+                {
+                    string upload = wwwRoot + PathManager.ImageProductPath;
+                    string imageName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(files[0].FileName);
+
+                    // delete old file
+                    var oldFile = productViewModel.Product.Image;
+                }
             }
 
             db.SaveChanges();
