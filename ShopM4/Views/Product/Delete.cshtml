@@ -24,7 +24,7 @@
     <p>
         <label asp-for="Description"></label>
         <!--<input asp-for="Product.Description" class="form-control" />-->
-        <textarea asp-for="Description" class="form-control summernote"></textarea>
+        <textarea asp-for="Description" class="form-control summernote" disabled></textarea>
     </p>
 
     <p>
@@ -55,20 +55,8 @@
         $(document).ready(function () {
             $('.summernote').summernote({
                 height: 200
+                disabled: true
             });
         });
-
-        /* alert */
-        function Input() {
-            if (document.getElementById("input").value == "") {
-                Swal.fire(
-                    'Error!',
-                    'Пожалуйста, загрузите картинку!',
-                    'error'
-                )
-                return false;
-            }
-            return true;
-        }
     </script>
 }
