@@ -154,5 +154,26 @@ namespace ShopM4.Controllers
             return RedirectToAction("Index");
             //return View();
         }
+
+        // GET - DELETE
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            Product product = db.Product.Find(id);
+
+            if (product == null) return NotFound();
+
+            product.Category = db.Category.Find(product.CategoryId);
+
+            if (product.Category == null) return NotFound();
+
+
+
+            return View();
+        }
     }
 }
