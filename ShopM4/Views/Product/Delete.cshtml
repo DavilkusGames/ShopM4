@@ -34,18 +34,14 @@
 
     <p>
         <input type="submit" class="btn btn-danger" value="Delete" />
-        <a class="btn btn-primary" asp-controller="Category" asp-action="Index"> Back </a>
-    </p>
-
-    <p>
-        <div asp-validation-summary="All"></div>
+        <a class="btn btn-primary" asp-controller="Product" asp-action="Index"> Back </a>
     </p>
 </form>
 
-@if (Model.Product.Id != 0)
+@if (Model.Id != 0)
 {
     <p>
-        <img src="@PathManager.ImageProductPath@Model.Product.Image" width="100" />
+        <img src="@PathManager.ImageProductPath@Model.Image" width="100" />
     </p>
 }
 
