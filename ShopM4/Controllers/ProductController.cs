@@ -169,7 +169,7 @@ namespace ShopM4.Controllers
 
             product.Category = db.Category.Find(product.CategoryId);
 
-            return View();
+            return View(product);
         }
     }
 }
