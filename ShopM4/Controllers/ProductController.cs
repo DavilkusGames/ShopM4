@@ -7,6 +7,7 @@ using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ShopM4.Data;
 using ShopM4.Models;
 using ShopM4.Models.ViewModels;
@@ -115,7 +116,7 @@ namespace ShopM4.Controllers
             else
             {
                 // update
-                var product = db.Product.FirstOrDefault(u => u.Id == productViewModel.Product.Id);
+                var product = db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productViewModel.Product.Id);
                 
                 if (files.Count > 0) // юзер загружает другой файл
                 {
