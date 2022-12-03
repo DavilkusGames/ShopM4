@@ -169,10 +169,6 @@ namespace ShopM4.Controllers
 
             product.Category = db.Category.Find(product.CategoryId);
 
-            if (product.Category == null) return NotFound();
-
-
-
             return View();
         }
     }
