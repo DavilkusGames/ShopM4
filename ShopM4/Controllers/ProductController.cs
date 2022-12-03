@@ -27,7 +27,7 @@ namespace ShopM4.Controllers
         public IActionResult Index()
         {
             IEnumerable<Product> objList = db.Product;
-
+            
             // Получаем ссылки на сущности категорий
             /*
             foreach (var item in objList)
@@ -114,8 +114,10 @@ namespace ShopM4.Controllers
             else
             {
                 // update
-                db.SaveChanges();
+                int a = 12;
             }
+
+            db.SaveChanges();
 
             return RedirectToAction("Index");
             //return View();
