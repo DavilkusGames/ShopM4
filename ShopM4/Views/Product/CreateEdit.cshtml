@@ -66,9 +66,12 @@
     </p>
 </form>
 
-<p>
-    <img src="@PathManager.ImageProductPath@Model.Product.Image" width="100"/>
-</p>
+@if (Model.Product.Id != 0)
+{
+    <p>
+        <img src="@PathManager.ImageProductPath@Model.Product.Image" width="100" />
+    </p>
+}
 
 @section Scripts {
     @{
