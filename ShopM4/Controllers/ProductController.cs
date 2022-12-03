@@ -171,5 +171,12 @@ namespace ShopM4.Controllers
 
             return View(product);
         }
+
+        // POST
+        [HttpPost]
+        public IActionResult Delete()
+        {
+            return View();
+        }
     }
 }
