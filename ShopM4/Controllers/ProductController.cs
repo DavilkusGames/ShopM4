@@ -174,9 +174,21 @@ namespace ShopM4.Controllers
 
         // POST
         [HttpPost]
-        public IActionResult Delete()
+        public IActionResult DeletePost(int? id)
         {
-            return View();
+			if (id == null || id == 0)
+			{
+				return NotFound();
+			}
+
+			Product product = db.Product.Find(id);
+
+            if (product == null) return NotFound();
+
+            db.Product.Remove(product);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
