@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
@@ -116,15 +117,35 @@ namespace ShopM4.Controllers
                 // update
                 var product = db.Product.FirstOrDefault(u => u.Id == productViewModel.Product.Id);
                 
-                if (files.Count > 0)
+                if (files.Count > 0) // юзер загружает другой файл
                 {
                     string upload = wwwRoot + PathManager.ImageProductPath;
                     string imageName = Guid.NewGuid().ToString();
                     string extension = Path.GetExtension(files[0].FileName);
+                    string path = upload + imageName + extension;
 
                     // delete old file
-                    var oldFile = productViewModel.Product.Image;
+                    var oldFile = upload + product.Image;
+
+                    if (System.IO.File.Exists(oldFile))
+                    {
+                        System.IO.File.Delete(oldFile);
+                    }
+
+                    // Скопируем файл на сервер
+                    using (var FileStream = new FileStream(path, FileMode.Create))
+                    {
+                        files[0].CopyTo(FileStream);
+                    }
+
+                    productViewModel.Product.Image = imageName + extension;
                 }
+                else // фотка не поменялась
+                {
+                    productViewModel.Product.Image = product.Image;  // оставляем имя прежним
+                }
+
+                db.Product.Update(productViewModel.Product);
             }
 
             db.SaveChanges();
