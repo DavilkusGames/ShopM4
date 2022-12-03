@@ -1,0 +1,96 @@
+﻿@model ShopM4.Models.Product
+
+@{
+    var title = "Delete Product";
+}
+
+<h1>@title</h1>
+
+<form method="post" enctype="multipart/form-data">
+
+    <!-- Передача скрытых данных -->
+    <input asp-for="Id" hidden />
+
+    <p>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </p>
+
+    <p>
+        <label asp-for="Product.Price"></label>
+        <input asp-for="Product.Price" class="form-control" />
+        <span asp-validation-for="Product.Price" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label asp-for="Product.Description"></label>
+        <!--<input asp-for="Product.Description" class="form-control" />-->
+        <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
+        <span asp-validation-for="Product.Description" class="text-danger"></span>
+    </p>
+
+    <p>
+        <label asp-for="Product.Image"></label>
+        <input type="file" name="files2022" class="form-control" multiple />
+    </p>
+
+    <p>
+        <label asp-for="Product.Id" asp-items="@ViewBag.CategoriesList"></label>
+        <select asp-for="Product.Id" asp-items="@ViewBag.CategoriesList" class="form-control">
+            <option disabled selected>-- Выберите категорию --</option>
+        </select>
+        <span asp-validation-for="Product.Id" class="text-danger"></span>
+    </p>
+
+    <p>
+        @if (Model.Product.Id != 0)
+        {
+            <input type="submit" class="btn btn-success" value="Update" />
+        }
+        else
+        {
+            <input type="submit" onclick="input()" class="btn btn-success" value="Create" />
+        }
+
+        <a class="btn btn-primary" asp-controller="Category" asp-action="Index"> Back </a>
+    </p>
+
+    <p>
+        <div asp-validation-summary="All"></div>
+    </p>
+</form>
+
+@if (Model.Product.Id != 0)
+{
+    <p>
+        <img src="@PathManager.ImageProductPath@Model.Product.Image" width="100" />
+    </p>
+}
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script>
+        /* editor */
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 200
+            });
+        });
+
+        /* alert */
+        function Input() {
+            if (document.getElementById("input").value == "") {
+                Swal.fire(
+                    'Error!',
+                    'Пожалуйста, загрузите картинку!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
