@@ -114,6 +114,7 @@ namespace ShopM4.Controllers
             else
             {
                 // update
+                var product = db.Product.FirstOrDefault(u => u.Id == productViewModel.Product.Id);
                 
                 if (files.Count > 0)
                 {
