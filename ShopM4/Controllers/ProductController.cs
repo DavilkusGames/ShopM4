@@ -188,6 +188,15 @@ namespace ShopM4.Controllers
             db.Product.Remove(product);
             db.SaveChanges();
 
+            string upload = webHostEnvironment.WebRootPath + PathManager.ImageProductPath;
+
+            var oldFile = upload + product.Image;
+
+            if (System.IO.File.Exists(oldFile))
+            {
+
+            }
+
             return RedirectToAction("Index");
         }
     }
