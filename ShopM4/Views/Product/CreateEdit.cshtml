@@ -36,14 +36,20 @@
 	</p>
 
 	<p>
+		<label asp-for="Product.Description"></label>
+		<input asp-for="Product.Description" class="form-control" />
+		<span asp-validation-for="Product.Description" class="text-danger"></span>
+	</p>
+
+	<p>
 		<label asp-for="Product.Image"></label>
 		<input type="file" name="files" class="form-control" id="uploadedImage" multiple />
 	</p>
 
 	<p>
 		<label asp-for="Product.CategoryId"></label>
-		<!--<select asp-for="CategoryId" asp-items="@ViewBag.CategoriesList" class="form-control">-->
-		<!--<select asp-for="CategoryId" asp-items="@ViewData["CategoriesList"] as IEnumerable<SelectListItem>" class="form-control">-->
+		<!--<select asp-for="CategoryId" asp-items="ViewBag.CategoriesList" class="form-control">-->
+		<!--<select asp-for="CategoryId" asp-items="ViewData["CategoriesList"] as IEnumerable<SelectListItem>" class="form-control">-->
 		<select asp-for="Product.CategoryId" asp-items="@Model.CategoriesList" class="form-control">
 			<option disabled selected>-- Выберите категорию --</option>
 		</select>
@@ -59,7 +65,7 @@
 		{
 			<input type="submit" onclick="input()" class="btn btn-success" value="Create" />
 		}
-		<a class="btn btn-primary" hasp-controller="Category" asp-action="Index">
+		<a class="btn btn-primary" hasp-controller="Product" asp-action="Index">
 			<i class="fa-solid fa-caret-left"></i>
 			Back
 		</a>
@@ -70,6 +76,14 @@
 	</p>
 </form>
 
+
+@if (Model.Product.Id != 0)
+{
+	<p>
+		<img src="@PathsManager.ImageProductPath@Model.Product.Image" width="150" />
+	</p>
+}
+
 @section Scripts {
 	@{
 		<partial name="_ValidationScriptsPartial" />
@@ -79,7 +93,7 @@
 		/* editor */
 		$(document).ready(function () {
 			$('.summernote').summernote({
-				height: 300
+				height: 200
 			});
 		});
 		/* alert */
@@ -87,12 +101,11 @@
 			if (document.getElementById("uploadedImage").value == "") {
 				Swal.fire(
 					'Error!',
-					'Please upload the Image!',
+					'Please upload image!',
 					'error'
 				)
 				return false;
 			}
 			return true;
-		}
-	</script>
+		}</script>
 }
