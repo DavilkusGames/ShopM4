@@ -19,7 +19,7 @@ namespace ShopM4.Controllers
 
 		public IActionResult Index()
 		{
-			IEnumerable<Category> categories = db.Categories;
+			IEnumerable<Category> categories = db.Category;
 
 			return View(categories);
 		}
@@ -37,7 +37,7 @@ namespace ShopM4.Controllers
 		{
 			if (ModelState.IsValid) // проверка модели на валидность
 			{
-				db.Categories.Add(category);
+				db.Category.Add(category);
 				db.SaveChanges();
 				return RedirectToAction("Index"); //переход на страницу Index
 			}
@@ -54,7 +54,7 @@ namespace ShopM4.Controllers
 				return NotFound();
 			}
 
-			var category = db.Categories.Find(id);
+			var category = db.Category.Find(id);
 
 			if (category == null)
 			{
@@ -71,7 +71,7 @@ namespace ShopM4.Controllers
 		{
 			if (ModelState.IsValid) // проверка модели на валидность
 			{
-				db.Categories.Update(category);  // !!!
+				db.Category.Update(category);  // !!!
 				db.SaveChanges();
 				return RedirectToAction("Index"); //переход на страницу Index
 			}
@@ -88,7 +88,7 @@ namespace ShopM4.Controllers
 				return NotFound();
 			}
 
-			var category = db.Categories.Find(id);
+			var category = db.Category.Find(id);
 
 			if (category == null)
 			{
@@ -103,14 +103,14 @@ namespace ShopM4.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult DeletePost(int? id)
 		{
-			var category = db.Categories.Find(id);
+			var category = db.Category.Find(id);
 
 			if (category == null)
 			{
 				return NotFound();
 			}
 
-			db.Categories.Remove(category);
+			db.Category.Remove(category);
 			db.SaveChanges();
 
 			return RedirectToAction("Index");

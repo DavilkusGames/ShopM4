@@ -33,7 +33,7 @@ namespace ShopM4.Controllers
 		{
 			if (model == null || model.Name == null)
 				return RedirectToAction("Index");
-			db.MyModels.Add(model);
+			db.MyModel.Add(model);
 			db.SaveChanges();
 
 			return RedirectToAction("Index");  //переход на страницу Index
@@ -48,7 +48,7 @@ namespace ShopM4.Controllers
 				return NotFound();
 			}
 
-			var model = db.MyModels.Find(id);
+			var model = db.MyModel.Find(id);
 
 			if (model == null)
 			{
@@ -82,7 +82,7 @@ namespace ShopM4.Controllers
 				return NotFound();
 			}
 
-			var model = db.MyModels.Find(id);
+			var model = db.MyModel.Find(id);
 
 			if (model == null)
 			{
@@ -104,7 +104,7 @@ namespace ShopM4.Controllers
 				return NotFound();
 			}
 
-			db.MyModels.Remove(model);
+			db.MyModel.Remove(model);
 			db.SaveChanges();
 
 			return RedirectToAction("Index");

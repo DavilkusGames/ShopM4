@@ -16,10 +16,10 @@ namespace ShopM4.Controllers
 {
 	public class ProductController : Controller
 	{
-		private ApplicationDBContext db;
+		private ApplicationDbContext db;
 		private IWebHostEnvironment webHostEnvironment;
 
-		public ProductController(ApplicationDBContext db, IWebHostEnvironment webHostEnvironment)
+		public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
 		{
 			this.db = db;
 			this.webHostEnvironment = webHostEnvironment;
@@ -58,13 +58,13 @@ namespace ShopM4.Controllers
 			ProductViewModel productViewModel = new ProductViewModel()
 			{
 				Product = new Product(),
-				CategoriesList = db.Categories.Select(x =>
+				CategoriesList = db.Category.Select(x =>
 				new SelectListItem
 				{
 					Text = x.Name,
 					Value = x.Id.ToString()
 				}),
-				MyModelsList = db.MyModels.Select(x =>
+				MyModelList = db.MyModel.Select(x =>
 				new SelectListItem
 				{
 					Text = x.Name,
@@ -102,7 +102,7 @@ namespace ShopM4.Controllers
 			if (productViewModel.Product.Id == 0)
 			{
 				// create
-				string upload = wwwRoot + PathsManager.ImageProductPath;
+				string upload = wwwRoot + PathManager.ImageProductPath;
 				string imageName = Guid.NewGuid().ToString();
 
 				string extension = Path.GetExtension(files[0].FileName);
@@ -127,7 +127,7 @@ namespace ShopM4.Controllers
 
 				if (files.Count > 0) // юзер загружает другой файл
 				{
-					string upload = wwwRoot + PathsManager.ImageProductPath;
+					string upload = wwwRoot + PathManager.ImageProductPath;
 					string imageName = Guid.NewGuid().ToString();
 
 					string extension = Path.GetExtension(files[0].FileName);
@@ -175,8 +175,8 @@ namespace ShopM4.Controllers
 			{
 				return NotFound();
 			}
-			product.Category = db.Categories.Find(product.CategoryId);
-			product.MyModel = db.MyModels.Find(product.MyModelId);
+			product.Category = db.Category.Find(product.CategoryId);
+			product.MyModel = db.MyModel.Find(product.MyModelId);
 
 			return View(product);
 		}
@@ -191,7 +191,7 @@ namespace ShopM4.Controllers
 			}
 			var product = db.Product.Find(id);
 
-			string upload = webHostEnvironment.WebRootPath + PathsManager.ImageProductPath;
+			string upload = webHostEnvironment.WebRootPath + PathManager.ImageProductPath;
 
 			var oldFile = upload + product.Image;
 
