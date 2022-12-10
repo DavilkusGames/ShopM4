@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\_ProductCard.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Data\" />
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="Views\Category\" />
@@ -25,5 +29,14 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_ProductCard.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Shared\_ProductCard.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\Shared\_ProductCard.cshtml" />
   </ItemGroup>
 </Project>
