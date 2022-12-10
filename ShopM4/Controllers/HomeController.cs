@@ -30,6 +30,17 @@ public class HomeController : Controller
 		return View(homeViewModel);
 	}
 
+	public IActionResult Details()
+	{
+		DetailsViewModel detailsViewModel = new DetailsViewModel()
+		{
+			IsInCart = false,
+			Product = 
+		};
+
+		return View();
+	}
+
 	public IActionResult Privacy()
 	{
 		return View();
