@@ -1,111 +1,120 @@
 ﻿@model ShopM4.Models.ViewModels.ProductViewModel
 
 @{
-	var title = "Create Product";
+    var title = "Create Product";
+}
+
+@if (Model.Product.Id != 0)
+{
+    title = "Edit Product";
 }
 
 <h1>@title</h1>
 
 <form method="post" enctype="multipart/form-data">
 
-	@if (Model.Product.Id != 0)
-	{
-		title = "Edit Product";
-	}
+    <!-- Передача скрытых данных -->
+    <input asp-for="Product.Id" hidden />
 
-	<!-- Передача скрытых данных -->
-	<input asp-for="Product.Id" hidden />
+    <p>
+        <label asp-for="Product.Name"></label>
+        <input asp-for="Product.Name" class="form-control" />
+        <span asp-validation-for="Product.Name" class="text-danger"></span>
+    </p>
 
-	<p>
-		<label asp-for="Product.Name"></label>
-		<input asp-for="Product.Name" class="form-control" />
-		<span asp-validation-for="Product.Name" class="text-danger"></span>
-	</p>
+    <p>
+        <label asp-for="Product.Price"></label>
+        <input asp-for="Product.Price" class="form-control" />
+        <span asp-validation-for="Product.Price" class="text-danger"></span>
+    </p>
 
-	<p>
-		<label asp-for="Product.Price"></label>
-		<input asp-for="Product.Price" class="form-control" />
-		<span asp-validation-for="Product.Price" class="text-danger"></span>
-	</p>
+    <p>
+        <label asp-for="Product.Description"></label>
+        <!--<input asp-for="Product.Description" class="form-control" />-->
+        <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
+        <span asp-validation-for="Product.Description" class="text-danger"></span>
+    </p>
 
-	<p>
-		<label asp-for="Product.Description"></label>
-		<!--<input asp-for="Product.Description" class="form-control" />-->
-		<textarea asp-for="Product.Description" class="form-control summernote"></textarea>
-		<span asp-validation-for="Product.Description" class="text-danger"></span>
-	</p>
+    <p>
+        <label asp-for="Product.ShortDescription"></label>
+        <input asp-for="Product.ShortDescription" class="form-control" />
+        <span asp-validation-for="Product.ShortDescription" class="text-danger"></span>
+    </p>
 
-	<p>
-		<label asp-for="Product.Description"></label>
-		<input asp-for="Product.Description" class="form-control" />
-		<span asp-validation-for="Product.Description" class="text-danger"></span>
-	</p>
+    <p>
+        <label asp-for="Product.Image"></label>
+        <input type="file" name="files" class="form-control" id="uploadedImage" multiple />
+    </p>
 
-	<p>
-		<label asp-for="Product.Image"></label>
-		<input type="file" name="files" class="form-control" id="uploadedImage" multiple />
-	</p>
+    <p>
+        <label asp-for="Product.CategoryId"></label>
+        <!--<select asp-for="CategoryId" asp-items="@ViewBag.CategoriesList" class="form-control">-->
 
-	<p>
-		<label asp-for="Product.CategoryId"></label>
-		<!--<select asp-for="CategoryId" asp-items="ViewBag.CategoriesList" class="form-control">-->
-		<!--<select asp-for="CategoryId" asp-items="ViewData["CategoriesList"] as IEnumerable<SelectListItem>" class="form-control">-->
-		<select asp-for="Product.CategoryId" asp-items="@Model.CategoriesList" class="form-control">
-			<option disabled selected>-- Выберите категорию --</option>
-		</select>
-		<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
-	</p>
+        <select asp-for="Product.CategoryId" asp-items="@Model.CategoriesList"
+                class="form-control">
+            <option disabled selected>-- Выберите категорию --</option>
+        </select>
 
-	<p>
-		@if (Model.Product.Id != 0)
-		{
-			<input type="submit" class="btn btn-success" value="Update" />
-		}
-		else
-		{
-			<input type="submit" onclick="input()" class="btn btn-success" value="Create" />
-		}
-		<a class="btn btn-primary" hasp-controller="Product" asp-action="Index">
-			<i class="fa-solid fa-caret-left"></i>
-			Back
-		</a>
-	</p>
+        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+    </p>
 
-	<p>
-		<div asp-validation-summary="All"></div>
-	</p>
+    <p>
+        <label asp-for="Product.MyModelId"></label>
+        <select asp-for="Product.MyModelId" asp-items="@Model.MyModelList"
+                class="form-control">
+            <option disabled selected>-- Выберите MyModel --</option>
+        </select>
+        <span asp-validation-for="Product.MyModelId" class="text-danger"></span>
+    </p>
+
+    <p>
+        @if (Model.Product.Id != 0)
+        {
+            <input type="submit" class="btn btn-success" value="Update" />
+        }
+        else
+        {
+            <input type="submit" onclick="input()" class="btn btn-success" value="Create" />
+        }
+
+        <a class="btn btn-primary" asp-controller="Category" asp-action="Index"> Back </a>
+    </p>
+
+    <p>
+        <div asp-validation-summary="All"></div>
+    </p>
 </form>
-
 
 @if (Model.Product.Id != 0)
 {
-	<p>
-		<img src="@PathManager.ImageProductPath@Model.Product.Image" width="150" />
-	</p>
+    <p>
+        <img src="@PathManager.ImageProductPath@Model.Product.Image" width="100" />
+    </p>
 }
 
-@section Scripts {
-	@{
-		<partial name="_ValidationScriptsPartial" />
-	}
 
-	<script>
-		/* editor */
-		$(document).ready(function () {
-			$('.summernote').summernote({
-				height: 200
-			});
-		});
-		/* alert */
-		function input() {
-			if (document.getElementById("uploadedImage").value == "") {
-				Swal.fire(
-					'Error!',
-					'Please upload image!',
-					'error'
-				)
-				return false;
-			}
-			return true;
-		}</script>
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script>
+        /* editor */
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 200
+            });
+        });
+        /* alert */
+        function input() {
+            if (document.getElementById("uploadedImage").value == "") {
+                Swal.fire(
+                    'Error!',
+                    'Пожалуйста, загрузите картинку!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }</script>
 }

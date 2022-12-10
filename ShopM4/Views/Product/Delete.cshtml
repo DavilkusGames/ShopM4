@@ -13,12 +13,12 @@
 
     <p>
         <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" disable/>
+        <input asp-for="Name" class="form-control" disabled />
     </p>
 
     <p>
         <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" disabled/>
+        <input asp-for="Price" class="form-control" disabled />
     </p>
 
     <p>
@@ -36,6 +36,7 @@
         <input type="submit" class="btn btn-danger" value="Delete" />
         <a class="btn btn-primary" asp-controller="Product" asp-action="Index"> Back </a>
     </p>
+
 </form>
 
 @if (Model.Id != 0)
@@ -45,17 +46,15 @@
     </p>
 }
 
+
 @section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
 
     <script>
         /* editor */
         $(document).ready(function () {
             $('.summernote').summernote({
-                height: 200
-                disabled: true
+                height: 200,
+                disable: true
             });
         });
     </script>

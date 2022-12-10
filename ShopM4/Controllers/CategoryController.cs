@@ -17,6 +17,7 @@ namespace ShopM4.Controllers
 			this.db = db;
 		}
 
+		// GET: /<controller>/
 		public IActionResult Index()
 		{
 			IEnumerable<Category> categories = db.Category;
@@ -35,11 +36,11 @@ namespace ShopM4.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult Create(Category category)
 		{
-			if (ModelState.IsValid) // проверка модели на валидность
+			if (ModelState.IsValid)  // проверка модели на валидность
 			{
 				db.Category.Add(category);
 				db.SaveChanges();
-				return RedirectToAction("Index"); //переход на страницу Index
+				return RedirectToAction("Index");  // переход на страницу категорий
 			}
 
 			return View(category);
@@ -64,16 +65,17 @@ namespace ShopM4.Controllers
 			return View(category);
 		}
 
-		//POST - Edit
+
+		// POST - Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Edit(Category category)
 		{
-			if (ModelState.IsValid) // проверка модели на валидность
+			if (ModelState.IsValid)  // проверка модели на валидность
 			{
 				db.Category.Update(category);  // !!!
 				db.SaveChanges();
-				return RedirectToAction("Index"); //переход на страницу Index
+				return RedirectToAction("Index");  // переход на страницу категорий
 			}
 
 			return View(category);
@@ -98,7 +100,7 @@ namespace ShopM4.Controllers
 			return View(category);
 		}
 
-		//POST - Delete
+		// POST - Delete
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult DeletePost(int? id)
@@ -117,4 +119,3 @@ namespace ShopM4.Controllers
 		}
 	}
 }
-

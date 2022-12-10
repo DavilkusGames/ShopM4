@@ -18,7 +18,7 @@ namespace ShopM4.Models
 		public string ShortDescription { get; set; }
 
 		[Required]
-		[Range(1, int.MaxValue, ErrorMessage = "Value must be more than 1.")]
+		[Range(1, int.MaxValue, ErrorMessage = "Значение должно быть больше 1 (НЕ НОЛЬ)")]
 		public double Price { get; set; }
 
 		public string Image { get; set; }
@@ -27,15 +27,16 @@ namespace ShopM4.Models
 		[Display(Name = "Category Id")]
 		public int CategoryId { get; set; }
 
-		// добавление внешнего ключа
+		// добавление внешнего ключа - связь с другой таблицей
 		[ForeignKey("CategoryId")]
 		public virtual Category Category { get; set; }
 
+		// явное добавление представления для внешнего ключа
 		[Display(Name = "MyModel Id")]
 		public int MyModelId { get; set; }
 
+		// добавление внешнего ключа - связь с другой таблицей
 		[ForeignKey("MyModelId")]
 		public virtual MyModel MyModel { get; set; }
 	}
 }
-

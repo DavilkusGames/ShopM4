@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,13 +27,16 @@ namespace ShopM4.Controllers
 		public IActionResult Index()
 		{
 			IEnumerable<Product> objList = db.Product;
+
+			// получаем ссылки на сущности категорий
 			/*
-            // получаем ссылки на сущности категорий
             foreach (var item in objList)
             {
-                item.Category = db.Categories.FirstOrDefault(x => x.Id == item.CategoryId);
+                // сопоставление таблицы категорий и таблицы product
+                item.Category = db.Category.FirstOrDefault(x => x.Id == item.CategoryId);
             }
             */
+
 			return View(objList);
 		}
 
@@ -90,6 +91,7 @@ namespace ShopM4.Controllers
 			}
 		}
 
+
 		// POST - CreateEdit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -122,14 +124,13 @@ namespace ShopM4.Controllers
 			else
 			{
 				// update
-				// AsNoTracking() importamt !
-				var product = db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productViewModel.Product.Id);
+				// AsNoTracking() - IMPORTANT!!!
+				var product = db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productViewModel.Product.Id); // LINQ
 
-				if (files.Count > 0) // юзер загружает другой файл
+				if (files.Count > 0)  // юзер загружает другой файл
 				{
 					string upload = wwwRoot + PathManager.ImageProductPath;
 					string imageName = Guid.NewGuid().ToString();
-
 					string extension = Path.GetExtension(files[0].FileName);
 					string path = upload + imageName + extension;
 
@@ -149,7 +150,7 @@ namespace ShopM4.Controllers
 
 					productViewModel.Product.Image = imageName + extension;
 				}
-				else // фотка не поменялась
+				else   // фотка не поменялась
 				{
 					productViewModel.Product.Image = product.Image;  // оставляем имя прежним
 				}
@@ -160,23 +161,27 @@ namespace ShopM4.Controllers
 			db.SaveChanges();
 
 			return RedirectToAction("Index");
+
+			//return View();
 		}
 
+
 		// GET - DELETE
-		[HttpGet]
 		public IActionResult Delete(int? id)
 		{
 			if (id == null || id == 0)
 			{
 				return NotFound();
 			}
-			var product = db.Product.Find(id);
+
+			Product product = db.Product.Find(id);
+
 			if (product == null)
 			{
 				return NotFound();
 			}
+
 			product.Category = db.Category.Find(product.CategoryId);
-			product.MyModel = db.MyModel.Find(product.MyModelId);
 
 			return View(product);
 		}
@@ -185,23 +190,30 @@ namespace ShopM4.Controllers
 		[HttpPost]
 		public IActionResult DeletePost(int? id)
 		{
-			if (id == null || id == 0)
+			if (id == null)
 			{
 				return NotFound();
 			}
-			var product = db.Product.Find(id);
 
-			string upload = webHostEnvironment.WebRootPath + PathManager.ImageProductPath;
-
-			var oldFile = upload + product.Image;
-
-			if (System.IO.File.Exists(oldFile))
-				System.IO.File.Delete(oldFile);
-
+			// delete from db
+			Product product = db.Product.Find(id);
 			db.Product.Remove(product);
 			db.SaveChanges();
 
+			// delete image from server
+			string upload = webHostEnvironment.WebRootPath + PathManager.ImageProductPath;
+
+			// получаем ссылку на нашу старую фотку
+			var oldFile = upload + product.Image;
+
+			if (System.IO.File.Exists(oldFile))
+			{
+				System.IO.File.Delete(oldFile);
+			}
+
+
 			return RedirectToAction("Index");
 		}
+
 	}
 }
