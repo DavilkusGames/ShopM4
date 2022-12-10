@@ -30,7 +30,7 @@ public class HomeController : Controller
 		return View(homeViewModel);
 	}
 
-	public IActionResult Details()
+	public IActionResult Details(int id)
 	{
 		DetailsViewModel detailsViewModel = new DetailsViewModel()
 		{
