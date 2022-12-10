@@ -35,7 +35,9 @@ public class HomeController : Controller
 		DetailsViewModel detailsViewModel = new DetailsViewModel()
 		{
 			IsInCart = false,
-			Product = db.Product.Find(id)
+			//Product = db.Product.Find(id)
+			Product = db.Product.Include(x => x.Category).
+				Where(x => x.Id == id).FirstOrDefault();
 		};
 
 		return View();
