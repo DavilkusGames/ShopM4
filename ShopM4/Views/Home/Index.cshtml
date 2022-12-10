@@ -9,7 +9,7 @@
         <button class="btn filter-button" data-filter="all">All</button>
         @foreach (var item in Model.Categories)
         {
-            <button class="btn filter-button" data-filter="all">
+            <button class="btn filter-button" data-filter="@item.Name.Replace(' ', '_')">
                 @item.Name
             </button>
         }
