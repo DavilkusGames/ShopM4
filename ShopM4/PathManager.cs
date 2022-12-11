@@ -1,7 +1,10 @@
-﻿namespace ShopM4
+﻿using System;
+
+namespace ShopM4
 {
-    public class PathManager
+    public static class PathManager
     {
         public static string ImageProductPath = @"\images\product\";
+        public static string SessionCart = "SessionCart";
     }
 }
