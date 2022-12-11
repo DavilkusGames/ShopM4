@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpContextAccessor();  // нужно для работы с сессиями для View
+
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "Winter2022";

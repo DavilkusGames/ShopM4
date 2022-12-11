@@ -36,10 +36,8 @@ public class HomeController : Controller
 		{
 			IsInCart = false,
 			//Product = db.Product.Find(id)
-			Product = db.Product.Include(x => x.Category).
-				Where(x => x.Id == id).FirstOrDefault();
+			Product = db.Product.Include(x => x.Category).Where(x => x.Id == id).FirstOrDefault()
 		};
-
 		return View();
 	}
 
