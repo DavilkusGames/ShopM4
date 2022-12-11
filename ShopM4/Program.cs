@@ -4,6 +4,12 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "Winter2022";
+    //options.IdleTimeout = TimeSpan.FromSeconds(10);
+}); // для работы с сессиями
+
 builder.Services.AddDbContext<ApplicationDbContext>(
     options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
@@ -40,18 +46,23 @@ app.Use((context, next) =>
 });
 */
 
+app.UseSession(); // Добавление middleware для работы с сессиями
+
+/*
 app.Run(x =>
 {
     //return x.Response.WriteAsync("Hello " + x.Items["name"]);
-    if (x.Request.Cookies.ContainsKey("name"))
+    if (x.Session.Keys.Contains("name"))
     {
-        return x.Response.WriteAsync("OK");
+        return x.Response.WriteAsync(x.Session.GetString("name"));
     }
     else
     {
+        x.Session.SetString("name", "Uasya");
         return x.Response.WriteAsync("NO");
     }
 });
+*/
 
 app.Run();
 
