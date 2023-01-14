@@ -57,7 +57,7 @@
                                 var count = HttpContextAccessor.HttpContext.Session.
                                     Get<List<Cart>>(PathManager.SessionCart).Count();
 
-                                <a href="#" class="nav-link">
+                                <a asp-controller="Cart" class="nav-link">
                                     <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
                                 </a>
                             }

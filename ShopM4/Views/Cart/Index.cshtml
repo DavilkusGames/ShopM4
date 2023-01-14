@@ -1,0 +1,37 @@
+﻿@page
+@{
+
+}
+
+<h1>Shopping Cart</h1>
+
+<form method="post">
+
+    <p><a class="btn" asp-asp-controller="Home">Continue Shopping</a></p>
+
+    @foreach (var item in Model)
+    {
+        <p>
+            <img src="@PathManager.ImageProductPath@item.Image" width="100" class="rounded"/>
+        </p>
+
+        <p>
+            Product Name: @item.Name
+        </p>
+
+        <p>
+            Description: @item.Description
+        </p>
+
+        <p>
+            Price: @item.Price
+        </p>
+
+        <p>
+            <a class="btn btn-danger" asp-action="Remove" asp-route-itemid=""">
+                TRASH
+            </a>
+        </p>
+    }
+
+</form>
