@@ -18,7 +18,7 @@
 
     <p>
         <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" disabled />
+        <input asp-for="Price" class="form-control" disabled/>
     </p>
 
     <p>
@@ -48,14 +48,15 @@
 
 
 @section Scripts {
-
-    <script>
-        /* editor */
+    
+    <script>/* editor */
         $(document).ready(function () {
             $('.summernote').summernote({
                 height: 200,
                 disable: true
             });
         });
+
     </script>
 }
+

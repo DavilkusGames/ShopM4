@@ -7,21 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Shared\_ProductCard.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Data\" />
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="Views\Category\" />
     <None Remove="Views\MyModel\" />
     <None Remove="Views\Product\" />
+    <None Remove="Models\ViewModels\" />
+    <None Remove="Utility\" />
+    <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <None Remove="Microsoft.AspNetCore.Identity.UI" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Views\Category\" />
     <Folder Include="Views\MyModel\" />
+    <Folder Include="Views\Product\" />
+    <Folder Include="Models\ViewModels\" />
+    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\images\product\" />
+    <Folder Include="Utility\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
@@ -29,14 +33,12 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
   </ItemGroup>
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Shared\_ProductCard.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Shared\_ProductCard.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Views\Shared\_ProductCard.cshtml" />
+    <Content Remove="wwwroot\images\" />
+    <Content Remove="wwwroot\images\product\" />
   </ItemGroup>
 </Project>

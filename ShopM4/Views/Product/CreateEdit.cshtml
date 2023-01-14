@@ -37,7 +37,7 @@
 
     <p>
         <label asp-for="Product.ShortDescription"></label>
-        <input asp-for="Product.ShortDescription" class="form-control" />
+        <input asp-for="Product.ShortDescription" class="form-control"/>
         <span asp-validation-for="Product.ShortDescription" class="text-danger"></span>
     </p>
 
@@ -98,13 +98,13 @@
         <partial name="_ValidationScriptsPartial" />
     }
 
-    <script>
-        /* editor */
+    <script>/* editor */
         $(document).ready(function () {
             $('.summernote').summernote({
                 height: 200
             });
         });
+
         /* alert */
         function input() {
             if (document.getElementById("uploadedImage").value == "") {

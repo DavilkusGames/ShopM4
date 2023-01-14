@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace ShopM4.Models
 {
     public class Cart
@@ -7,3 +6,4 @@ namespace ShopM4.Models
         public int ProductId { get; set; }
     }
 }
+

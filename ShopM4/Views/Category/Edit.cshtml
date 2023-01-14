@@ -5,7 +5,7 @@
 <form method="post">
 
     <!-- Передача скрытых данных -->
-    <input asp-for="Id" hidden />
+    <input asp-for="Id" hidden/>
 
     <p>
         <label asp-for="Name"></label>
@@ -30,7 +30,5 @@
 </form>
 
 @section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
+    @{ <partial name="_ValidationScriptsPartial" /> }
 }

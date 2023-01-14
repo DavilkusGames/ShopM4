@@ -1,19 +1,46 @@
 ﻿@model ShopM4.Models.ViewModels.DetailsViewModel
 
-<p>
-    <h2>@Model.Product.Name</h2>
 
-    <h2>@Model.Product.Price</h2>
-</p>
+<form method="post" asp-action="DetailsPost" asp-controller="Home">
 
-<p>
-    <img src="@PathManager.ImageProductPath@Model.Product.Image" width=200>
-</p>
+    <p>
+        <input asp-for="Product.Id" hidden />
+    </p>
 
-<p>
-    <h3>@Model.Product.Category.Name</h3>
-</p>
+        <p>
+            <h2>@Model.Product.Name</h2>
 
-<p>
-    @Html.Raw(Model.Product.Description)
-</p>
+            <h2>@Model.Product.Price</h2>
+        </p>
+
+        <p>
+            <img src="@PathManager.ImageProductPath@Model.Product.Image" width="200" />
+        </p>
+
+        <p>
+            <h3>@Model.Product.Category.Name</h3>
+        </p>
+
+        <p>
+            @Html.Raw(Model.Product.Description)
+        </p>
+
+        <p>
+            <a class="btn btn-primary" asp-action="Index"> Back </a>
+
+            @if (Model.IsInCart)
+            {
+                <a asp-action="RemoveFromCart" asp-route-Id="@Model.Product.Id" class="btn btn-warning">
+                    Remove from Cart
+                </a>
+            }
+            else
+            {
+                <button type="submit" asp-route-Id="@Model.Product.Id" class="btn btn-primary"
+                        asp-action="DetailsPost">
+                    Add to cart
+                </button>
+            }
+
+        </p>
+</form>

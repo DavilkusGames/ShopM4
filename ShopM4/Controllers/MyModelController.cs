@@ -5,21 +5,22 @@ using ShopM4.Models;
 
 namespace ShopM4.Controllers
 {
-	public class MyModelController : Controller
-	{
-		private ApplicationDbContext db;
+    public class MyModelController : Controller
+    {
+        private ApplicationDbContext db;
 
-		public MyModelController(ApplicationDbContext db)
-		{
-			this.db = db;
-		}
+        public MyModelController(ApplicationDbContext db)
+        {
+            this.db = db;
+        }
 
-		// GET: /<controller>/
-		public IActionResult Index()
-		{
-			IEnumerable<MyModel> models = db.MyModel;
+        // GET: /<controller>/
+        public IActionResult Index()
+        {
+            IEnumerable<MyModel> models = db.MyModel;
 
-			return View(models);
-		}
-	}
+            return View(models);
+        }
+    }
 }
+

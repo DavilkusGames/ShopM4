@@ -5,11 +5,12 @@
 }
 
 <div class="container">
+
     <div>
         <button class="btn filter-button" data-filter="all">All</button>
         @foreach (var item in Model.Categories)
         {
-            <button class="btn filter-button" data-filter="@item.Name.Replace(' ', '_')">
+            <button class="btn filter-button" data-filter="@item.Name.Replace(' ','_')">
                 @item.Name
             </button>
         }
@@ -25,6 +26,7 @@
 
 @section Scripts {
     <script>
+
         $(document).ready(function () {
             $('.filter-button').click(function () {
                 var value = $(this).attr('data-filter');
@@ -38,5 +40,6 @@
                 }
             });
         });
+
     </script>
 }

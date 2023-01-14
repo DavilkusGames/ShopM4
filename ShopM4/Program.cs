@@ -1,22 +1,31 @@
-﻿using ShopM4.Data;
+using ShopM4.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddHttpContextAccessor();  // нужно для работы с сессиями для View
+builder.Services.AddHttpContextAccessor();   // нужно для работы с сессиями для View
 
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "Winter2022";
     //options.IdleTimeout = TimeSpan.FromSeconds(10);
-}); // для работы с сессиями
+});   // для работы с сессиями
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+// для автоматического создания таблиц в бд
+//builder.Services.AddDefaultIdentity<IdentityUser>().
+//    AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().
+    AddDefaultUI().AddDefaultTokenProviders().
+    AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();  // MVC
 
@@ -35,24 +44,25 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();  // added
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-/*
-app.Use((context, next) =>
+app.MapRazorPages();   // для определения маршрута к странице Razor
+
+/*app.Use((context, next) =>
 {
     context.Items["name"] = "Dany";
     return next.Invoke();
-});
-*/
+}); */
 
-app.UseSession(); // Добавление middleware для работы с сессиями
+app.UseSession();     // добавление middleware для работы с сессиями
 
-/*
-app.Run(x =>
+/*app.Run(x =>
 {
     //return x.Response.WriteAsync("Hello " + x.Items["name"]);
     if (x.Session.Keys.Contains("name"))
@@ -64,8 +74,7 @@ app.Run(x =>
         x.Session.SetString("name", "Uasya");
         return x.Response.WriteAsync("NO");
     }
-});
-*/
+}); */
 
 app.Run();
 
