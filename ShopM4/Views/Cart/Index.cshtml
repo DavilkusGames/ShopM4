@@ -1,13 +1,12 @@
-﻿@page
-@{
-
-}
+﻿@model IEnumerable<Product>
 
 <h1>Shopping Cart</h1>
 
+@if (Model.Count() > 0)
+{
 <form method="post">
 
-    <p><a class="btn" asp-asp-controller="Home">Continue Shopping</a></p>
+    <p><a class="btn btn-primary" asp-asp-controller="Home">Continue Shopping</a></p>
 
     @foreach (var item in Model)
     {
@@ -28,10 +27,11 @@
         </p>
 
         <p>
-            <a class="btn btn-danger" asp-action="Remove" asp-route-itemid=""">
+            <a class="btn btn-danger" asp-action="Remove" asp-route-itemid="@item.Id">
                 TRASH
             </a>
         </p>
     }
 
 </form>
+}
