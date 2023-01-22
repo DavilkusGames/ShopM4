@@ -19,6 +19,7 @@ namespace ShopM4.Controllers
         ApplicationDbContext db;
 
         ProductUserViewModel productUserViewModel;
+        IWebHostEnvironment webHostEnvironment;
 
         public CartController(ApplicationDbContext db)
         {
@@ -67,6 +68,21 @@ namespace ShopM4.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult InquiryConfirmation()
+        {
+            HttpContext.Session.Clear();  // очистить сессию полностью
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SummaryPost(ProductUserViewModel productUserViewModel)
+        {
+            // код для отправки сообщения
+
+            return RedirectToAction("InquiryConfirmation");
+        }
+
         [HttpPost]
         public IActionResult Summary()
         {
@@ -93,7 +109,7 @@ namespace ShopM4.Controllers
             productUserViewModel = new ProductUserViewModel()
             {
                 ApplicationUser = db.ApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
-                ProductList = productList
+                ProductList = productList.ToList()
             };
 
             return View(productUserViewModel);
