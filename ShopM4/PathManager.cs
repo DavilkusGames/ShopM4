@@ -8,6 +8,8 @@ namespace ShopM4
 
         public const string AdminRole = "Admin";
         public const string CustomerRole = "Customer";
+
+        public const string EmailSender = "davilkafm@yandex.ru";
     }
 }
 
