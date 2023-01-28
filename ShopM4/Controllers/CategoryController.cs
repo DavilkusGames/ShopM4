@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopM4.Data;
 using ShopM4.Models;
 
 namespace ShopM4.Controllers
 {
+    [Authorize(Roles = PathManager.AdminRole)]
     public class CategoryController : Controller
     {
         private ApplicationDbContext db;

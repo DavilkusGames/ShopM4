@@ -27,7 +27,6 @@
     @for (int i = 0; i < Model.ProductList.Count(); i++)
     {
         <input type="hidden" asp-for="@Model.ProductList[i].Id" />
-        <input type="hidden" asp-for="@Model.ProductList[i].Name" />
 
         <p>
             Product Name: @Model.ProductList[i].Name
@@ -37,6 +36,7 @@
             Price: @Model.ProductList[i].Price
         </p>
     }
+
 
     <p>
         <button type="submit" class="btn btn-success form-control">Submit</button>

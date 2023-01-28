@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ShopM4.Data;
 using ShopM4.Models;
@@ -19,11 +20,17 @@ namespace ShopM4.Controllers
         ApplicationDbContext db;
 
         ProductUserViewModel productUserViewModel;
+
         IWebHostEnvironment webHostEnvironment;
 
-        public CartController(ApplicationDbContext db)
+        IEmailSender emailSender;
+
+        public CartController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment,
+            IEmailSender emailSender)
         {
             this.db = db;
+            this.webHostEnvironment = webHostEnvironment;
+            this.emailSender = emailSender;
         }
 
 
@@ -70,18 +77,46 @@ namespace ShopM4.Controllers
 
         public IActionResult InquiryConfirmation()
         {
-            HttpContext.Session.Clear();  // очистить сессию полностью
+            HttpContext.Session.Clear();   // очистить полностью сессию
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult SummaryPost(ProductUserViewModel productUserViewModel)
+        public async Task<IActionResult> SummaryPost(ProductUserViewModel productUserViewModel)
         {
             // код для отправки сообщения
+            // combine
+            var path = webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString() +
+                "templates" + Path.DirectorySeparatorChar.ToString() + "Inquiry.html";
+
+            var subject = "New Order";
+
+            string bodyHtml = "";
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                bodyHtml = reader.ReadToEnd();
+            }
+
+            string textProducts = "";
+            foreach (var item in productUserViewModel.ProductList)
+            {
+                textProducts += $"- Name: {item.Name}, ID: {item.Id}\n";
+            }
+
+            string body = string.Format(bodyHtml, productUserViewModel.ApplicationUser.FullName,
+                productUserViewModel.ApplicationUser.Email,
+                productUserViewModel.ApplicationUser.PhoneNumber,
+                textProducts
+            );
+
+            await emailSender.SendEmailAsync(productUserViewModel.ApplicationUser.Email, subject, body);
+            await emailSender.SendEmailAsync("viosagmir@gmail.com", subject, body);
 
             return RedirectToAction("InquiryConfirmation");
         }
+
 
         [HttpPost]
         public IActionResult Summary()
