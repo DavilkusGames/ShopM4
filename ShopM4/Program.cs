@@ -2,7 +2,7 @@ using ShopM4.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using ShopM4.Utility;
+using ShopM4_Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 

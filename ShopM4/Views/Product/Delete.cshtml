@@ -1,4 +1,5 @@
-﻿@model ShopM4.Models.Product
+﻿@using ShopM4_Utility
+@model ShopM4_Models.Product
 
 @{
     var title = "Delete Product";
@@ -18,7 +19,7 @@
 
     <p>
         <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" disabled/>
+        <input asp-for="Price" class="form-control" disabled />
     </p>
 
     <p>
@@ -48,15 +49,13 @@
 
 
 @section Scripts {
-    
+
     <script>/* editor */
         $(document).ready(function () {
             $('.summernote').summernote({
                 height: 200,
                 disable: true
             });
-        });
-
-    </script>
+        });</script>
 }
 

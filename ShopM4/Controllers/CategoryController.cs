@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopM4.Data;
-using ShopM4.Models;
+using ShopM4_Models;
+using ShopM4_Utility;
 
 namespace ShopM4.Controllers
 {

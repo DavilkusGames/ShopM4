@@ -1,4 +1,5 @@
-﻿@model ShopM4.Models.ViewModels.ProductViewModel
+﻿@using ShopM4_Utility
+@model ShopM4_Models.ViewModels.ProductViewModel
 
 @{
     var title = "Create Product";
@@ -37,7 +38,7 @@
 
     <p>
         <label asp-for="Product.ShortDescription"></label>
-        <input asp-for="Product.ShortDescription" class="form-control"/>
+        <input asp-for="Product.ShortDescription" class="form-control" />
         <span asp-validation-for="Product.ShortDescription" class="text-danger"></span>
     </p>
 

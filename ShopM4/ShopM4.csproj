@@ -7,27 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\" />
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="Views\Category\" />
     <None Remove="Views\MyModel\" />
     <None Remove="Views\Product\" />
-    <None Remove="Models\ViewModels\" />
-    <None Remove="Utility\" />
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <None Remove="Microsoft.AspNetCore.Identity.UI" />
     <None Remove="Views\Cart\" />
     <None Remove="Mailjet.Api" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Views\Category\" />
     <Folder Include="Views\MyModel\" />
     <Folder Include="Views\Product\" />
-    <Folder Include="Models\ViewModels\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\images\product\" />
-    <Folder Include="Utility\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="wwwroot\templates\" />
   </ItemGroup>
@@ -46,5 +40,16 @@
     <Content Remove="wwwroot\images\" />
     <Content Remove="wwwroot\images\product\" />
     <Content Remove="wwwroot\templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShopM4_Utility\ShopM4_Utility.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\ShopM4_Models\ShopM4_Models.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\ShopM4_DataMigrations\ShopM4_DataMigrations.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

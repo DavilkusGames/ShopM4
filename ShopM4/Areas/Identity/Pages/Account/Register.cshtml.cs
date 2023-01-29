@@ -18,7 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using ShopM4.Models;
+using ShopM4_Models;
+using ShopM4_Utility;
 
 namespace ShopM4.Areas.Identity.Pages.Account
 {

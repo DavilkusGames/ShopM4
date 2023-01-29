@@ -2,7 +2,7 @@
 @model RegisterModel
 
 
-@if (User.IsInRole(ShopM4.PathManager.AdminRole))
+@if (User.IsInRole(ShopM4_Utility.PathManager.AdminRole))
 {
     <h1>You can register an Admin Account</h1>
 }
@@ -41,7 +41,7 @@ else
             </div>
 
 
-            @if (User.IsInRole(ShopM4.PathManager.AdminRole))
+            @if (User.IsInRole(ShopM4_Utility.PathManager.AdminRole))
             {
                 <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-warning">
                     Register Admin User
