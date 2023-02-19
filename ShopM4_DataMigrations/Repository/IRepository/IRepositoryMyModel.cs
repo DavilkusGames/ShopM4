@@ -7,7 +7,7 @@ using ShopM4_Models;
 
 namespace ShopM4_DataMigrations.Repository.IRepository
 {
-    internal interface IRepositoryMyModel : IRepository<MyModel>
+    public interface IRepositoryMyModel : IRepository<MyModel>
     {
         void Update(Category obj); 
     }
