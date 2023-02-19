@@ -23,9 +23,25 @@ namespace ShopM4.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            IEnumerable<MyModel> models = db.MyModel;
+            IEnumerable<MyModel> models = repositoryMyModel.GetAll();
 
             return View(models);
+        }
+
+        // GET CREATE
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST CREATE
+        [HttpPost]
+        public IActionResult Create(MyModel myModel)
+        {
+            repositoryMyModel.Add(myModel);
+            repositoryMyModel.Save();
+
+            return RedirectToAction("Index");
         }
     }
 }
