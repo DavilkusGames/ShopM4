@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShopM4.Data;
+using ShopM4_DataMigrations.Data;
 
 #nullable disable
 
@@ -173,12 +173,10 @@ namespace ShopM4_DataMigrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -215,12 +213,10 @@ namespace ShopM4_DataMigrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -230,7 +226,7 @@ namespace ShopM4_DataMigrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ShopM4.Models.Category", b =>
+            modelBuilder.Entity("ShopM4_Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,7 +246,7 @@ namespace ShopM4_DataMigrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("ShopM4.Models.MyModel", b =>
+            modelBuilder.Entity("ShopM4_Models.MyModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -270,7 +266,7 @@ namespace ShopM4_DataMigrations
                     b.ToTable("MyModel");
                 });
 
-            modelBuilder.Entity("ShopM4.Models.Product", b =>
+            modelBuilder.Entity("ShopM4_Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -312,7 +308,7 @@ namespace ShopM4_DataMigrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("ShopM4.Models.ApplicationUser", b =>
+            modelBuilder.Entity("ShopM4_Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -374,15 +370,15 @@ namespace ShopM4_DataMigrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShopM4.Models.Product", b =>
+            modelBuilder.Entity("ShopM4_Models.Product", b =>
                 {
-                    b.HasOne("ShopM4.Models.Category", "Category")
+                    b.HasOne("ShopM4_Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShopM4.Models.MyModel", "MyModel")
+                    b.HasOne("ShopM4_Models.MyModel", "MyModel")
                         .WithMany()
                         .HasForeignKey("MyModelId")
                         .OnDelete(DeleteBehavior.Cascade)

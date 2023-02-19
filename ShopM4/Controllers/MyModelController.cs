@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using Microsoft.AspNetCore.Mvc;
-using ShopM4.Data;
+using ShopM4_DataMigrations.Data;
 using ShopM4_Models;
 using ShopM4_Utility;
 

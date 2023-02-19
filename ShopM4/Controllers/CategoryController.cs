@@ -5,26 +5,30 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShopM4.Data;
+using ShopM4_DataMigrations.Data;
 using ShopM4_Models;
 using ShopM4_Utility;
+
+using ShopM4_DataMigrations.Repository.IRepository;
 
 namespace ShopM4.Controllers
 {
     [Authorize(Roles = PathManager.AdminRole)]
     public class CategoryController : Controller
     {
-        private ApplicationDbContext db;
+        private IRepositoryCategory repositoryCategory;
 
-        public CategoryController(ApplicationDbContext db)
+        // private ApplicationDbContext db;
+
+        public CategoryController(IRepositoryCategory repositoryCategory)
         {
-            this.db = db;
+            this.repositoryCategory = repositoryCategory;
         }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-            IEnumerable<Category> categories = db.Category;
+            IEnumerable<Category> categories = repositoryCategory.GetAll();
 
             return View(categories);
         }
@@ -42,8 +46,9 @@ namespace ShopM4.Controllers
         {
             if (ModelState.IsValid)  // проверка модели на валидность
             {
-                db.Category.Add(category);
-                db.SaveChanges();
+                repositoryCategory.Add(category);
+                repositoryCategory.Save();
+
                 return RedirectToAction("Index");  // переход на страницу категорий
             }
 
@@ -59,7 +64,8 @@ namespace ShopM4.Controllers
                 return NotFound();
             }
 
-            var category = db.Category.Find(id);
+            //var category = db.Category.Find(id);
+            var category = repositoryCategory.Find(id.GetValueOrDefault());
 
             if (category == null)
             {
@@ -77,8 +83,12 @@ namespace ShopM4.Controllers
         {
             if (ModelState.IsValid)  // проверка модели на валидность
             {
-                db.Category.Update(category);  // !!!
-                db.SaveChanges();
+                //db.Category.Update(category);  // !!!
+                //db.SaveChanges();
+
+                repositoryCategory.Update(category);
+                repositoryCategory.Save();
+
                 return RedirectToAction("Index");  // переход на страницу категорий
             }
 
@@ -94,7 +104,8 @@ namespace ShopM4.Controllers
                 return NotFound();
             }
 
-            var category = db.Category.Find(id);
+            //var category = db.Category.Find(id);
+            var category = repositoryCategory.Find(id.GetValueOrDefault());
 
             if (category == null)
             {
@@ -109,15 +120,18 @@ namespace ShopM4.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var category = db.Category.Find(id);
+            var category = repositoryCategory.Find(id.GetValueOrDefault());
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            db.Category.Remove(category);
-            db.SaveChanges();
+            //db.Category.Remove(category);
+            //db.SaveChanges();
+
+            repositoryCategory.Remove(category);
+            repositoryCategory.Save();
 
             return RedirectToAction("Index");
         }

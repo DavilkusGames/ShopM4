@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopM4_Models;
 
-namespace ShopM4.Data
+namespace ShopM4_DataMigrations.Data
 {
     public class ApplicationDbContext: IdentityDbContext    // изменили наследование
     {

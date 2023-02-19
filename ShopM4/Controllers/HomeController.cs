@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShopM4.Data;
+using ShopM4_DataMigrations.Data;
 using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
