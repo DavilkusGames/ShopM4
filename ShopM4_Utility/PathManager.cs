@@ -11,6 +11,9 @@ namespace ShopM4_Utility
         public const string CustomerRole = "Customer";
 
         public const string EmailSender = "viosagmir@gmail.com";
+
+        public const string NameCategory = "Category";
+        public const string NameMyModel = "MyModel";
     }
 }
 

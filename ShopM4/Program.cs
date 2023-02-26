@@ -37,7 +37,9 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();   // EMAIL SENDER
 
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddScoped<IRepositoryMyModel, RepositoryMyModel>();
-
+builder.Services.AddScoped<IRepositoryProduct, RepositoryProduct>();
+builder.Services.AddScoped<IRepositoryQueryHeader, RepositoryQueryHeader>();
+builder.Services.AddScoped<IRepositoryQueryDetail, RepositoryQueryDetail>();
 
 builder.Services.AddControllersWithViews();  // MVC
 

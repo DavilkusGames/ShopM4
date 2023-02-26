@@ -20,9 +20,12 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Repository\" />
+    <Folder Include="Repository\IRepository\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShopM4_Models\ShopM4_Models.csproj" />
+    <ProjectReference Include="..\ShopM4_Utility\ShopM4_Utility.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />

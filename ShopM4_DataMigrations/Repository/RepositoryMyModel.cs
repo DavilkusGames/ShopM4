@@ -5,13 +5,13 @@ using ShopM4_Models;
 
 namespace ShopM4_DataMigrations.Repository
 {
-    internal class RepositoryMyModel : Repository<MyModel>, IRepositoryMyModel
+    public class RepositoryMyModel : Repository<MyModel>, IRepositoryMyModel
     {
         public RepositoryMyModel(ApplicationDbContext db) : base(db) { }
 
-        public void Update(Category obj)
+        public void Update(MyModel obj)
         {
-            MyModel objFromDb = db.MyModel.FirstOrDefault(x => x.Id == obj.Id);
+            var objFromDb = db.MyModel.FirstOrDefault(x => x.Id == obj.Id);
 
             if (objFromDb != null)
             {
@@ -21,3 +21,4 @@ namespace ShopM4_DataMigrations.Repository
         }
     }
 }
+

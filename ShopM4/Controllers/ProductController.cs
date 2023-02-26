@@ -12,24 +12,31 @@ using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
 
+using ShopM4_DataMigrations.Repository.IRepository;
+using ShopM4_DataMigrations.Repository;
+
 namespace ShopM4.Controllers
 {
     [Authorize(Roles = PathManager.AdminRole)]
     public class ProductController : Controller
     {
-        private ApplicationDbContext db;
+        // private ApplicationDbContext db;
+
+        private IRepositoryProduct repositoryProduct;
+
         private IWebHostEnvironment webHostEnvironment;
 
-        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IRepositoryProduct repositoryProduct,
+            IWebHostEnvironment webHostEnvironment)
         {
-            this.db = db;
+            this.repositoryProduct = repositoryProduct;
             this.webHostEnvironment = webHostEnvironment;
         }
 
         // GET INDEX
         public IActionResult Index()
         {
-            IEnumerable<Product> objList = db.Product;
+            IEnumerable<Product> objList = repositoryProduct.GetAll();
 
             // получаем ссылки на сущности категорий
             /*
@@ -63,18 +70,8 @@ namespace ShopM4.Controllers
             ProductViewModel productViewModel = new ProductViewModel()
             {
                 Product = new Product(),
-                CategoriesList = db.Category.Select(x =>
-                new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }),
-                MyModelList = db.MyModel.Select(x =>
-                new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                })
+                CategoriesList = repositoryProduct.GetListItems(PathManager.NameCategory),
+                MyModelList = repositoryProduct.GetListItems(PathManager.NameMyModel)
             };
 
             if (id == null)
@@ -85,7 +82,8 @@ namespace ShopM4.Controllers
             else
             {
                 // edit product
-                productViewModel.Product = db.Product.Find(id);
+                //productViewModel.Product = db.Product.Find(id);
+                productViewModel.Product = repositoryProduct.Find(id.GetValueOrDefault());
 
                 if (productViewModel.Product == null)
                 {
@@ -123,13 +121,19 @@ namespace ShopM4.Controllers
 
                 productViewModel.Product.Image = imageName + extension;
 
-                db.Product.Add(productViewModel.Product);
+                //db.Product.Add(productViewModel.Product);
+                repositoryProduct.Add(productViewModel.Product);
             }
             else
             {
                 // update
                 // AsNoTracking() - IMPORTANT!!!
-                var product = db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productViewModel.Product.Id); // LINQ
+                // var product = db.Product.AsNoTracking().
+                //     FirstOrDefault(u => u.Id == productViewModel.Product.Id); // LINQ
+
+
+                var product = repositoryProduct.
+                    FirstOrDefault(u => u.Id == productViewModel.Product.Id, isTracking: false);
 
                 if (files.Count > 0)  // юзер загружает другой файл
                 {
@@ -159,10 +163,12 @@ namespace ShopM4.Controllers
                     productViewModel.Product.Image = product.Image;  // оставляем имя прежним
                 }
 
-                db.Product.Update(productViewModel.Product);  
+                //db.Product.Update(productViewModel.Product);
+                repositoryProduct.Update(productViewModel.Product);
             }
 
-            db.SaveChanges();
+            // db.SaveChanges();
+            repositoryProduct.Save();
 
             return RedirectToAction("Index");
 
@@ -178,14 +184,17 @@ namespace ShopM4.Controllers
                 return NotFound();
             }
 
-            Product product = db.Product.Find(id);
+            //Product product = db.Product.Find(id);
+            Product product = repositoryProduct.FirstOrDefault
+                (x => x.Id == id, includeProperties: "Category,MyModel");    // ???
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            product.Category = db.Category.Find(product.CategoryId);
+            // product.Category = db.Category.Find(product.CategoryId);
+            // product.Category = db.Category.Find(product.CategoryId);
 
             return View(product);
         }
@@ -194,15 +203,12 @@ namespace ShopM4.Controllers
         [HttpPost]
         public IActionResult DeletePost(int? id)
         {
-            if (id == null)
+            Product product = repositoryProduct.Find(id.GetValueOrDefault());
+
+            if (product == null)
             {
                 return NotFound();
             }
-
-            // delete from db
-            Product product = db.Product.Find(id);
-            db.Product.Remove(product);
-            db.SaveChanges();
 
             // delete image from server
             string upload = webHostEnvironment.WebRootPath + PathManager.ImageProductPath;
@@ -215,6 +221,8 @@ namespace ShopM4.Controllers
                 System.IO.File.Delete(oldFile);
             }
 
+            repositoryProduct.Remove(product);
+            repositoryProduct.Save();
 
             return RedirectToAction("Index");
         }

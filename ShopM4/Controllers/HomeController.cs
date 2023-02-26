@@ -6,25 +6,34 @@ using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
 
+using ShopM4_DataMigrations.Repository.IRepository;
+
 namespace ShopM4.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private ApplicationDbContext db;
 
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+    //private ApplicationDbContext db;
+    private IRepositoryProduct repositoryProduct;
+    private IRepositoryCategory repositoryCategory;
+
+    public HomeController(ILogger<HomeController> logger,
+        IRepositoryProduct repositoryProduct, IRepositoryCategory repositoryCategory)
     {
-        this.db = db;
         _logger = logger;
+
+        this.repositoryCategory = repositoryCategory;
+        this.repositoryProduct = repositoryProduct;
     }
 
     public IActionResult Index()
     {
         HomeViewModel homeViewModel = new HomeViewModel()
         {
-            Products = db.Product,
-            Categories = db.Category
+            Products = repositoryProduct.GetAll(includeProperties:
+            $"{PathManager.NameCategory},{PathManager.NameMyModel}"),
+            Categories = repositoryCategory.GetAll()
         };
 
 
@@ -45,9 +54,14 @@ public class HomeController : Controller
         DetailsViewModel detailsViewModel = new DetailsViewModel()
         {
             IsInCart = false,
-            //Product = db.Product.Find(id)
-            Product = db.Product.Include(x => x.Category).
-                                 Where(x => x.Id == id).FirstOrDefault()
+
+
+            //Product = db.Product.Include(x => x.Category).Include(x => x.MyModel).
+            //                     Where(x => x.Id == id).FirstOrDefault()
+
+            Product = repositoryProduct.FirstOrDefault(
+                filter: x => x.Id == id,
+                includeProperties: $"{PathManager.NameCategory},{PathManager.NameMyModel}")
         };
 
         // проверка на наличие товара в корзине
