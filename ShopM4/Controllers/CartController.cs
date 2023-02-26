@@ -58,7 +58,7 @@ namespace ShopM4.Controllers
 
             // извлекаем сами продукты по списку id
             IEnumerable<Product> productList =
-                repositoryProduct.GetAll(x => productsIdInCart.Contains(x.id));
+                repositoryProduct.GetAll(x => productsIdInCart.Contains(x.Id));
 
             return View(productList);
         }
