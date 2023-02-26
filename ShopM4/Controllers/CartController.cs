@@ -29,14 +29,20 @@ namespace ShopM4.Controllers
         IRepositoryProduct repositoryProduct;
         IRepositoryApplicationUser repositoryApplicationUser;
 
+        IRepositoryQueryHeader repositoryQueryHeader;
+        IRepositoryQueryDetail repositoryQueryDetail;
+
         public CartController(IWebHostEnvironment webHostEnvironment,
             IEmailSender emailSender, IRepositoryProduct repositoryProduct,
-            IRepositoryApplicationUser repositoryApplicationUser)
+            IRepositoryApplicationUser repositoryApplicationUser,
+            IRepositoryQueryHeader repositoryQueryHeader, IRepositoryQueryDetail repositoryQueryDetail)
         {
             this.webHostEnvironment = webHostEnvironment;
             this.emailSender = emailSender;
             this.repositoryProduct = repositoryProduct;
             this.repositoryApplicationUser = repositoryApplicationUser;
+            this.repositoryQueryHeader = repositoryQueryHeader;
+            this.repositoryQueryDetail = repositoryQueryDetail;
         }
 
 
@@ -120,6 +126,23 @@ namespace ShopM4.Controllers
 
             await emailSender.SendEmailAsync(productUserViewModel.ApplicationUser.Email, subject, body);
             await emailSender.SendEmailAsync("viosagmir@gmail.com", subject, body);
+
+            // Добавление данных в БД по заказу
+            QueryHeader queryHeader = new QueryHeader()
+            {
+                ApplicationUserId = productUserViewModel.ApplicationUser.Id,
+                QueryDate = DateTime.Now,
+                FullName = productUserViewModel.ApplicationUser.FullName,
+                PhoneNumber = productUserViewModel.ApplicationUser.PhoneNumber,
+                Email = productUserViewModel.ApplicationUser.Email
+            };
+
+            // Получение юзера
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            repositoryQueryHeader.Add(queryHeader);
+            repositoryQueryHeader.Save();
 
             return RedirectToAction("InquiryConfirmation");
         }
