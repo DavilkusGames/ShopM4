@@ -138,11 +138,27 @@ namespace ShopM4.Controllers
             };
 
             // Получение юзера
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //claim.Value -> getId
 
             repositoryQueryHeader.Add(queryHeader);
             repositoryQueryHeader.Save();
+
+            // сделать запись деталей - всех продуктов в БД
+            foreach (var item in productUserViewModel.ProductList)
+            {
+                QueryDetail queryDetail = new QueryDetail()
+                {
+                    ProductId = item.Id,
+                    QueryHeaderId = queryHeader.Id,
+                    QueryHeader = queryHeader,
+                    Product = repositoryProduct.Find(item.Id)
+                };
+
+                repositoryQueryDetail.Add(queryDetail);
+            }
+            repositoryQueryDetail.Save();
 
             return RedirectToAction("InquiryConfirmation");
         }
