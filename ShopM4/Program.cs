@@ -40,6 +40,7 @@ builder.Services.AddScoped<IRepositoryMyModel, RepositoryMyModel>();
 builder.Services.AddScoped<IRepositoryProduct, RepositoryProduct>();
 builder.Services.AddScoped<IRepositoryQueryHeader, RepositoryQueryHeader>();
 builder.Services.AddScoped<IRepositoryQueryDetail, RepositoryQueryDetail>();
+builder.Services.AddScoped<IRepositoryApplicationUser, IRepositoryApplicationUser>();
 
 builder.Services.AddControllersWithViews();  // MVC
 

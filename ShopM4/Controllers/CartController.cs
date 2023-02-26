@@ -11,26 +11,32 @@ using ShopM4_DataMigrations.Data;
 using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
+using ShopM4_DataMigrations.Repository;
+using ShopM4_DataMigrations.Repository.IRepository;
 
 namespace ShopM4.Controllers
 {
     [Authorize]
     public class CartController : Controller
     {
-        ApplicationDbContext db;
+        // ApplicationDbContext db;
 
         ProductUserViewModel productUserViewModel;
 
         IWebHostEnvironment webHostEnvironment;
-
         IEmailSender emailSender;
 
-        public CartController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment,
-            IEmailSender emailSender)
+        IRepositoryProduct repositoryProduct;
+        IRepositoryApplicationUser repositoryApplicationUser;
+
+        public CartController(IWebHostEnvironment webHostEnvironment,
+            IEmailSender emailSender, IRepositoryProduct repositoryProduct,
+            IRepositoryApplicationUser repositoryApplicationUser)
         {
-            this.db = db;
             this.webHostEnvironment = webHostEnvironment;
             this.emailSender = emailSender;
+            this.repositoryProduct = repositoryProduct;
+            this.repositoryApplicationUser = repositoryApplicationUser;
         }
 
 
@@ -51,7 +57,8 @@ namespace ShopM4.Controllers
             List<int> productsIdInCart = cartList.Select(x => x.ProductId).ToList();
 
             // извлекаем сами продукты по списку id
-            IEnumerable<Product> productList = db.Product.Where(x => productsIdInCart.Contains(x.Id));
+            IEnumerable<Product> productList =
+                repositoryProduct.GetAll(x => productsIdInCart.Contains(x.id));
 
             return View(productList);
         }
@@ -138,12 +145,12 @@ namespace ShopM4.Controllers
             List<int> productsIdInCart = cartList.Select(x => x.ProductId).ToList();
 
             // извлекаем сами продукты по списку id
-            IEnumerable<Product> productList = db.Product.Where(x => productsIdInCart.Contains(x.Id));
-
+            //IEnumerable<Product> productList = db.Product.Where(x => productsIdInCart.Contains(x.Id));
+            IEnumerable<Product> productList = repositoryProduct.GetAll(x => productsIdInCart.Contains(x.Id));
 
             productUserViewModel = new ProductUserViewModel()
             {
-                ApplicationUser = db.ApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
+                ApplicationUser = repositoryApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
                 ProductList = productList.ToList()
             };
 
