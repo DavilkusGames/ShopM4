@@ -5,8 +5,9 @@ using ShopM4_Models;
 
 namespace ShopM4_DataMigrations.Repository
 {
-    internal class RepositoryApplicationUser : Repository<ApplicationUser>, IRepositoryApplicationUser
+    public class RepositoryApplicationUser : Repository<ApplicationUser>, IRepositoryApplicationUser
     {
         public RepositoryApplicationUser(ApplicationDbContext db) : base(db) { }
     }
 }
+

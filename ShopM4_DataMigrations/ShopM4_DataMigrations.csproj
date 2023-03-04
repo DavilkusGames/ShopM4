@@ -20,6 +20,8 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Repository\" />
+    <Folder Include="Repository\IRepository\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShopM4_Models\ShopM4_Models.csproj" />

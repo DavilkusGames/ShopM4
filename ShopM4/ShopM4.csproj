@@ -15,6 +15,7 @@
     <None Remove="Microsoft.AspNetCore.Identity.UI" />
     <None Remove="Views\Cart\" />
     <None Remove="Mailjet.Api" />
+    <None Remove="Views\Query\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Category\" />
@@ -24,6 +25,7 @@
     <Folder Include="wwwroot\images\product\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="wwwroot\templates\" />
+    <Folder Include="Views\Query\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">

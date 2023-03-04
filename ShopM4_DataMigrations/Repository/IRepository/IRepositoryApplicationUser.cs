@@ -5,6 +5,7 @@ namespace ShopM4_DataMigrations.Repository.IRepository
 {
     public interface IRepositoryApplicationUser : IRepository<ApplicationUser>
     {
-
+        
     }
 }
+

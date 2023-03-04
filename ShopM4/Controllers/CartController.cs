@@ -11,7 +11,6 @@ using ShopM4_DataMigrations.Data;
 using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
-using ShopM4_DataMigrations.Repository;
 using ShopM4_DataMigrations.Repository.IRepository;
 
 namespace ShopM4.Controllers
@@ -39,8 +38,8 @@ namespace ShopM4.Controllers
         {
             this.webHostEnvironment = webHostEnvironment;
             this.emailSender = emailSender;
-            this.repositoryProduct = repositoryProduct;
             this.repositoryApplicationUser = repositoryApplicationUser;
+            this.repositoryProduct = repositoryProduct;
             this.repositoryQueryHeader = repositoryQueryHeader;
             this.repositoryQueryDetail = repositoryQueryDetail;
         }
@@ -63,6 +62,7 @@ namespace ShopM4.Controllers
             List<int> productsIdInCart = cartList.Select(x => x.ProductId).ToList();
 
             // извлекаем сами продукты по списку id
+            //IEnumerable<Product> productList = db.Product.Where(x => productsIdInCart.Contains(x.Id));
             IEnumerable<Product> productList =
                 repositoryProduct.GetAll(x => productsIdInCart.Contains(x.Id));
 
@@ -98,6 +98,10 @@ namespace ShopM4.Controllers
         [HttpPost]
         public async Task<IActionResult> SummaryPost(ProductUserViewModel productUserViewModel)
         {
+            // work with user
+            var identityClaims = (ClaimsIdentity)User.Identity;
+            var claim = identityClaims.FindFirst(ClaimTypes.NameIdentifier);
+           
             // код для отправки сообщения
             // combine
             var path = webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString() +
@@ -127,23 +131,25 @@ namespace ShopM4.Controllers
             await emailSender.SendEmailAsync(productUserViewModel.ApplicationUser.Email, subject, body);
             await emailSender.SendEmailAsync("viosagmir@gmail.com", subject, body);
 
-            // Добавление данных в БД по заказу
+            // добавление данных в БД по заказу
             QueryHeader queryHeader = new QueryHeader()
             {
-                ApplicationUserId = productUserViewModel.ApplicationUser.Id,
+                ApplicationUserId = claim.Value,
                 QueryDate = DateTime.Now,
                 FullName = productUserViewModel.ApplicationUser.FullName,
                 PhoneNumber = productUserViewModel.ApplicationUser.PhoneNumber,
-                Email = productUserViewModel.ApplicationUser.Email
+                Email = productUserViewModel.ApplicationUser.Email,
+                ApplicationUser = claim.Value
             };
 
-            // Получение юзера
-            //var claimsIdentity = (ClaimsIdentity)User.Identity;
-            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            //claim.Value -> getId
+            // получение юзера
+            //var claimsIdentiry = (ClaimsIdentity)User.Identity;
+            //var claim = claimsIdentiry.FindFirst(ClaimTypes.NameIdentifier);
+            // claim.Value -> getId
 
             repositoryQueryHeader.Add(queryHeader);
             repositoryQueryHeader.Save();
+
 
             // сделать запись деталей - всех продуктов в БД
             foreach (var item in productUserViewModel.ProductList)
@@ -159,6 +165,7 @@ namespace ShopM4.Controllers
                 repositoryQueryDetail.Add(queryDetail);
             }
             repositoryQueryDetail.Save();
+
 
             return RedirectToAction("InquiryConfirmation");
         }
@@ -187,8 +194,10 @@ namespace ShopM4.Controllers
             //IEnumerable<Product> productList = db.Product.Where(x => productsIdInCart.Contains(x.Id));
             IEnumerable<Product> productList = repositoryProduct.GetAll(x => productsIdInCart.Contains(x.Id));
 
+
             productUserViewModel = new ProductUserViewModel()
             {
+                //ApplicationUser = db.ApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
                 ApplicationUser = repositoryApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
                 ProductList = productList.ToList()
             };

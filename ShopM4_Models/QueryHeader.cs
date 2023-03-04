@@ -23,7 +23,6 @@ namespace ShopM4_Models
 
         [Required]
         public string Email { get; set; }
-
     }
 }
 
