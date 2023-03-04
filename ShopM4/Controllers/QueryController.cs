@@ -31,6 +31,13 @@ namespace ShopM4.Controllers
         {
             return View();
         }
+
+        public IActionResult GetQueryList()
+        {
+            JsonResult result = Json(new { data = repositoryQueryHeader.GetAll() });
+
+            return result;
+        }
     }
 }
 

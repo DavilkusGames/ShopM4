@@ -139,7 +139,7 @@ namespace ShopM4.Controllers
                 FullName = productUserViewModel.ApplicationUser.FullName,
                 PhoneNumber = productUserViewModel.ApplicationUser.PhoneNumber,
                 Email = productUserViewModel.ApplicationUser.Email,
-                ApplicationUser = claim.Value
+                ApplicationUser = repositoryApplicationUser.FirstOrDefault(x => x.Id == claim.Value)
             };
 
             // получение юзера
