@@ -2,6 +2,8 @@
 
 <form method="post">
 
+    <input hidden asp-for="QueryHeader.Id"></input>
+
     <a asp-action="Index" class="btn form-control btn-success">Back to queries</a>
 
     <h2>Information</h2>
@@ -33,7 +35,10 @@
 
     <h2>Details</h2>
 
-    <h5>Product Name</h5>
-    <p>Price: 100 р.</p>
+    @foreach(var item in Model.QueryDetail)
+    {
+        <h5>Product Name: @item.Product.Name</h5>
+        <p>Price: @item.Product.Price р.</p>
+    }
 
 </form>

@@ -38,15 +38,24 @@ namespace ShopM4.Controllers
 
         public IActionResult Details(int id)
         {
-            QueryViewModel = new QueryViewModel()
-            {
-                // извлекаем хедер из репозитория
-                QueryHeader = repositoryQueryHeader.FirstOrDefault(x => x.Id == id),
-                QueryDetail = repositoryQueryDetail.GetAll(x => x.QueryHeaderId == id,
-                 includeProperties: "Product")
-            };
+            List<Cart> carts = new List<Cart>();
 
-            return View(QueryViewModel);
+            QueryViewModel.QueryDetail = repositoryQueryDetail.GetAll(
+                x => x.QueryHeader.Id == QueryViewModel.QueryHeader.Id);
+
+            // создаем корзину покупок и добавляем значения в сессию
+            foreach (var item in QueryViewModel.QueryDetail)
+            {
+                Cart cart = new Cart() { ProductId = item.ProductId };
+
+                carts.Add(cart);
+            }
+
+            // работа с сессиями
+            HttpContext.Session.Clear();
+            HttpContext.Session.Set(PathManager.SessionCart, carts);
+
+            return RedirectToAction("Index", "Cart");
         }
 
         public IActionResult GetQueryList()
