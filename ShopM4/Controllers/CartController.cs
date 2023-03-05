@@ -101,6 +101,7 @@ namespace ShopM4.Controllers
             // work with user
             var identityClaims = (ClaimsIdentity)User.Identity;
             var claim = identityClaims.FindFirst(ClaimTypes.NameIdentifier);
+
            
             // код для отправки сообщения
             // combine
@@ -141,11 +142,6 @@ namespace ShopM4.Controllers
                 Email = productUserViewModel.ApplicationUser.Email,
                 ApplicationUser = repositoryApplicationUser.FirstOrDefault(x => x.Id == claim.Value)
             };
-
-            // получение юзера
-            //var claimsIdentiry = (ClaimsIdentity)User.Identity;
-            //var claim = claimsIdentiry.FindFirst(ClaimTypes.NameIdentifier);
-            // claim.Value -> getId
 
             repositoryQueryHeader.Add(queryHeader);
             repositoryQueryHeader.Save();

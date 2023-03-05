@@ -1,17 +1,22 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
     $('#myTable').DataTable({
         "ajax": {
-                "url" : "/query/" + "GetQueryList"
+            "url": "/query/" + "GetQueryList"
         },
         "columns": [
-            { "data": "id" }
+            { "data": "id" },
             { "data": "fullName" },
             { "data": "phoneNumber" },
             { "data": "email" },
             {
-                "data": null,
-                "render": function (data) { return 'Button'; }
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <a href="/query/details/${data}" class="btn btn-success"> Go </a>
+                    `;
                 }
+            }
         ]
     });
 });
