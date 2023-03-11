@@ -53,6 +53,7 @@ namespace ShopM4.Controllers
 
                 return RedirectToAction("Index");  // переход на страницу категорий
             }
+            TempData["Error"] = "Error!";
 
             return View(category);
         }

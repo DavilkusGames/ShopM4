@@ -6,5 +6,15 @@
     <!-- include toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <script>toastr.info('Are you the 6 fingered man?')</script>
+    <script>toastr.info('@TempData["Success"]')</script>
 }
+
+@if (TempData["Error"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- include toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>toastr.error('@TempData["Error"]')</script>
+}
+
