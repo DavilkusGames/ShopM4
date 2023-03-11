@@ -12,6 +12,7 @@ using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
 using ShopM4_DataMigrations.Repository.IRepository;
+using System.Collections;
 
 namespace ShopM4.Controllers
 {
@@ -63,8 +64,18 @@ namespace ShopM4.Controllers
 
             // извлекаем сами продукты по списку id
             //IEnumerable<Product> productList = db.Product.Where(x => productsIdInCart.Contains(x.Id));
-            IEnumerable<Product> productList =
+            IEnumerable<Product> productListTemp =
                 repositoryProduct.GetAll(x => productsIdInCart.Contains(x.Id));
+
+            List<Product> productList = new List<Product>();
+
+            foreach (var item in cartList)
+            {
+                Product product = productListTemp.FirstOrDefault(x => x.Id == item.ProductId);
+                product.TempCount = item.Count;
+
+                productList.Add(product);
+            }
 
             return View(productList);
         }
