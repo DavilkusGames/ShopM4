@@ -211,6 +211,25 @@ namespace ShopM4.Controllers
 
             return View(productUserViewModel);
         }
+
+        [HttpPost]
+        public IActionResult Update(IEnumerable<Product> products)
+        {
+            List<Cart> cartList = new List<Cart>();
+
+            foreach (var product in products)
+            {
+                cartList.Add(new Cart
+                {
+                    ProductId = product.Id,
+                    Count = product.TempCount
+                });
+            }
+
+            HttpContext.Session.Set(PathManager.SessionCart, cartList);
+
+            return RedirectToAction("Index");
+        }
     }
 }
 
