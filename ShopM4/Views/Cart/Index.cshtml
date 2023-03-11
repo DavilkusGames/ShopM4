@@ -10,11 +10,29 @@
 {
     <form method="post" asp-action="Summary">
 
+        @{
+            double totalPriceProducts = 0;
+        }
+
         @foreach (var item in Model)
         {
             <p>
                 <img src="@PathManager.ImageProductPath@item.Image" width="100" class="rounded" />
             </p>
+
+            @if (User.IsInRole(PathManager.AdminRole))
+            {
+                <p>
+                    Count:
+                    <input type="text" asp-for="@item.TempCount" class="form-control"/>
+                </p>
+
+                <p>
+                    Total Price: @(item.TempCount * item.Price)
+                </p>
+
+                totalPriceProducts += item.TempCount * item.Price;
+           }
 
             <p>
                 Product Name: @item.Name
@@ -35,6 +53,13 @@
             </p>
         }
 
+        @if (User.IsInRole(PathManager.AdminRole))
+        {
+            <h2>Total: @totalPriceProducts</h2>
+
+            <input type="submit" value="Update Cart" class="btn btn-info form-control" 
+                asp-action="Update"/>
+        }
 
         <p>
             <button type="submit" class="btn btn-success">
