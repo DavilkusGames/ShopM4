@@ -49,11 +49,11 @@ namespace ShopM4.Controllers
                 repositoryCategory.Add(category);
                 repositoryCategory.Save();
 
-                TempData["Success"] = "OK!";
+                TempData[PathManager.Success] = "OK!";
 
                 return RedirectToAction("Index");  // переход на страницу категорий
             }
-            TempData["Error"] = "Error!";
+            TempData[PathManager.Error] = "Error!";
 
             return View(category);
         }

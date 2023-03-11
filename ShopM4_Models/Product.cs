@@ -38,6 +38,8 @@ namespace ShopM4_Models
         // добавление внешнего ключа - связь с другой таблицей
         [ForeignKey("MyModelId")]
         public virtual MyModel MyModel { get; set; }
+
+
     }
 }
 

@@ -1,4 +1,4 @@
-﻿
+﻿@using ShopM4_Utility;
 
 @if (TempData["Success"] != null)
 {
@@ -6,7 +6,7 @@
     <!-- include toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <script>toastr.info('@TempData["Success"]')</script>
+    <script>toastr.success('@TempData[PathManager.Success]')</script>
 }
 
 @if (TempData["Error"] != null)
@@ -15,6 +15,6 @@
     <!-- include toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <script>toastr.error('@TempData["Error"]')</script>
+    <script>toastr.error('@TempData[PathManager.Error]')</script>
 }
 
