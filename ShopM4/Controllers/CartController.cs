@@ -197,6 +197,20 @@ namespace ShopM4.Controllers
         [HttpPost]
         public IActionResult Summary()
         {
+            ApplicationUser applicationUser;
+
+            if (User.IsInRole(PathManager.AdminRole))
+            {
+                // Корзина заполняется на основании существующего запроса
+                if (HttpContext.Session.Get<int>(PathManager.SessionQuery) != 0)
+                {
+                    // Можем забрать данные из id запроса для юзера
+
+                    QueryHeader queryHeader = repositoryQueryHeader.FirstOrDefault(
+                        x => x.Id == HttpContext.Session.Get<int>(PathManager.SessionQuery));
+                }
+            }
+
             var claimsIdentity = (ClaimsIdentity)User.Identity;
 
             // если пользователь вошел в систему, то объект будет определен
