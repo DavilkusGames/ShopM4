@@ -251,9 +251,16 @@ namespace ShopM4.Controllers
             productUserViewModel = new ProductUserViewModel()
             {
                 //ApplicationUser = db.ApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
-                ApplicationUser = repositoryApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
-                ProductList = productList.ToList()
+                ApplicationUser = applicationUser,
             };
+
+            foreach (var item in cartList)
+            {
+                Product product = repositoryProduct.FirstOrDefault(x => x.Id == item.ProductId);
+                product.TempCount = item.Count;
+
+                productUserViewModel.ProductList.Add(product);
+            }
 
             return View(productUserViewModel);
         }
