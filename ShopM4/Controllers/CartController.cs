@@ -80,6 +80,22 @@ namespace ShopM4.Controllers
             return View(productList);
         }
 
+        [HttpPost]
+        [ActionName("Index")]
+        public IActionResult IndexPost(IEnumerable<Product> products)
+        {
+            List<Cart> carts = new List<Cart>();
+
+            foreach (var product in products)
+            {
+                carts.Add(new Cart() { ProductId = product.Id, Count = product.TempCount });
+            }
+
+            HttpContext.Session.Set(PathManager.SessionCart, carts);
+
+            return RedirectToAction("Summary");
+        }
+
         public IActionResult Remove(int id)
         {
             // удаление из корзины

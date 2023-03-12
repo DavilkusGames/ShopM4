@@ -1,5 +1,6 @@
 ﻿@using ShopM4_Utility
-@model IEnumerable<Product>
+@using ShopM4_Models
+@model List<Product>
 
 <h1>Shooping Cart</h1>
 
@@ -14,40 +15,42 @@
             double totalPriceProducts = 0;
         }
 
-        @foreach (var item in Model)
+        @for(int i = 0; i < Model.Count(); i++)
         {
+            <input hidden asp-for="@Model[i].Id"/>
+
             <p>
-                <img src="@PathManager.ImageProductPath@item.Image" width="100" class="rounded" />
+                <img src="@PathManager.ImageProductPath@Model[i].Image" width="100" class="rounded" />
             </p>
 
             @if (User.IsInRole(PathManager.AdminRole))
             {
                 <p>
                     Count:
-                    <input type="text" asp-for="@item.TempCount" class="form-control"/>
+                    <input type="text" asp-for="@Model[i].TempCount" class="form-control" />
                 </p>
 
                 <p>
-                    Total Price: @(item.TempCount * item.Price)
+                    Total Price: @(Model[i].TempCount * Model[i].Price)
                 </p>
 
-                totalPriceProducts += item.TempCount * item.Price;
-           }
+                totalPriceProducts += Model[i].TempCount * Model[i].Price;
+            }
 
             <p>
-                Product Name: @item.Name
+                Product Name: @Model[i].Name
             </p>
 
             <p>
-                Description: @item.ShortDescription
+                Description: @Model[i].ShortDescription
             </p>
 
             <p>
-                Price: @item.Price
+                Price: @Model[i].Price
             </p>
 
             <p>
-                <a class="btn btn-danger" asp-action="Remove" asp-route-Id="@item.Id">
+                <a class="btn btn-danger" asp-action="Remove" asp-route-Id="@Model[i].Id">
                     TRASH
                 </a>
             </p>
@@ -58,7 +61,7 @@
             <h2>Total: @totalPriceProducts</h2>
 
             <input type="submit" value="Update Cart" class="btn btn-info form-control" 
-                asp-action="Update" />
+                asp-action="UpdateCart" formmethod="post" name="Update" />
         }
 
         <p>
