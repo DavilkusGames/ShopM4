@@ -208,13 +208,29 @@ namespace ShopM4.Controllers
 
                     QueryHeader queryHeader = repositoryQueryHeader.FirstOrDefault(
                         x => x.Id == HttpContext.Session.Get<int>(PathManager.SessionQuery));
+
+                    applicationUser = new ApplicationUser()
+                    {
+                        Email = queryHeader.Email,
+                        PhoneNumber = queryHeader.PhoneNumber,
+                        FullName = queryHeader.FullName
+                    };
+                }
+                else   // корзина заполняется админом ДЛЯ юзера
+                {
+                    applicationUser = new ApplicationUser();
                 }
             }
+            else    // работа юзера с корзиной
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
 
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
+                // если пользователь вошел в систему, то объект будет определен
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            // если пользователь вошел в систему, то объект будет определен
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                applicationUser = repositoryApplicationUser.FirstOrDefault(
+                    x => x.Id == claim.Value);
+            }
 
             List<Cart> cartList = new List<Cart>();
 
