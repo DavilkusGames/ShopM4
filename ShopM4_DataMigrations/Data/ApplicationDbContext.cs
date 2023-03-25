@@ -20,6 +20,9 @@ namespace ShopM4_DataMigrations.Data
 
         public DbSet<QueryHeader> QueryHeader { get; set; }
         public DbSet<QueryDetail> QueryDetail { get; set; }
+
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
     }
 }
 

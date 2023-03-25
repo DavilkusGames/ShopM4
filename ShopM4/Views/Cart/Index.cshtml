@@ -1,5 +1,6 @@
 ﻿@using ShopM4_Utility
 @using ShopM4_Models
+
 @model List<Product>
 
 <h1>Shooping Cart</h1>
@@ -15,12 +16,24 @@
             double totalPriceProducts = 0;
         }
 
-        @for(int i = 0; i < Model.Count(); i++)
+        @for(int i = 0; i < Model.Count(); i++) 
         {
-            <input hidden asp-for="@Model[i].Id"/>
+            <input hidden asp-for="@Model[i].Id" />
 
             <p>
                 <img src="@PathManager.ImageProductPath@Model[i].Image" width="100" class="rounded" />
+            </p>
+
+            <p>
+                Product Name: @Model[i].Name
+            </p>
+
+            <p>
+                Description: @Model[i].ShortDescription
+            </p>
+
+            <p>
+                Price: @Model[i].Price
             </p>
 
             @if (User.IsInRole(PathManager.AdminRole))
@@ -38,31 +51,21 @@
             }
 
             <p>
-                Product Name: @Model[i].Name
-            </p>
-
-            <p>
-                Description: @Model[i].ShortDescription
-            </p>
-
-            <p>
-                Price: @Model[i].Price
-            </p>
-
-            <p>
                 <a class="btn btn-danger" asp-action="Remove" asp-route-Id="@Model[i].Id">
                     TRASH
                 </a>
             </p>
         }
 
+
         @if (User.IsInRole(PathManager.AdminRole))
         {
             <h2>Total: @totalPriceProducts</h2>
 
-            <input type="submit" value="Update Cart" class="btn btn-info form-control" 
-                asp-action="UpdateCart" formmethod="post" name="Update" />
+            <input type="submit" value="Update Cart" class="btn btn-info form-control"
+                   asp-action="Update" formmethod="post" name="Update" />
         }
+
 
         <p>
             <button type="submit" class="btn btn-success">

@@ -9,9 +9,14 @@
   <ItemGroup>
     <None Remove="Mailjet.Api" />
     <None Remove="Microsoft.AspNetCore.Identity.UI" />
+    <None Remove="BrainTree\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mailjet.Api" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.1" />
+    <PackageReference Include="Braintree" Version="5.16.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BrainTree\" />
   </ItemGroup>
 </Project>

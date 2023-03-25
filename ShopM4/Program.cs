@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ShopM4_Utility;
+using ShopM4_Utility.BrainTree;
 
 using ShopM4_DataMigrations.Repository;
 using ShopM4_DataMigrations.Repository.IRepository;
@@ -34,6 +35,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();   // EMAIL SENDER
 
+builder.Services.Configure<SettingsBrainTree>(builder.Configuration.GetSection("BrainTree"));
 
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddScoped<IRepositoryMyModel, RepositoryMyModel>();
@@ -41,6 +43,8 @@ builder.Services.AddScoped<IRepositoryProduct, RepositoryProduct>();
 builder.Services.AddScoped<IRepositoryQueryHeader, RepositoryQueryHeader>();
 builder.Services.AddScoped<IRepositoryQueryDetail, RepositoryQueryDetail>();
 builder.Services.AddScoped<IRepositoryApplicationUser, RepositoryApplicationUser>();
+builder.Services.AddScoped<IRepositoryOrderHeader, RepositoryOrderHeader>();
+builder.Services.AddScoped<IRepositoryOrderDetail, RepositoryOrderDetail>();
 
 builder.Services.AddControllersWithViews();  // MVC
 

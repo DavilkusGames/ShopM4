@@ -12,7 +12,7 @@ using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
 using ShopM4_DataMigrations.Repository.IRepository;
-using System.Collections;
+using System.Net.NetworkInformation;
 
 namespace ShopM4.Controllers
 {
@@ -32,10 +32,14 @@ namespace ShopM4.Controllers
         IRepositoryQueryHeader repositoryQueryHeader;
         IRepositoryQueryDetail repositoryQueryDetail;
 
+        IRepositoryOrderHeader repositoryOrderHeader;
+        IRepositoryOrderDetail repositoryOrderDetail;
+
         public CartController(IWebHostEnvironment webHostEnvironment,
             IEmailSender emailSender, IRepositoryProduct repositoryProduct,
             IRepositoryApplicationUser repositoryApplicationUser,
-            IRepositoryQueryHeader repositoryQueryHeader, IRepositoryQueryDetail repositoryQueryDetail)
+            IRepositoryQueryHeader repositoryQueryHeader, IRepositoryQueryDetail repositoryQueryDetail,
+            IRepositoryOrderHeader repositoryOrderHeader, IRepositoryOrderDetail repositoryOrderDetail)
         {
             this.webHostEnvironment = webHostEnvironment;
             this.emailSender = emailSender;
@@ -43,6 +47,9 @@ namespace ShopM4.Controllers
             this.repositoryProduct = repositoryProduct;
             this.repositoryQueryHeader = repositoryQueryHeader;
             this.repositoryQueryDetail = repositoryQueryDetail;
+
+            this.repositoryOrderHeader = repositoryOrderHeader;
+            this.repositoryOrderDetail = repositoryOrderDetail;
         }
 
 
@@ -80,6 +87,7 @@ namespace ShopM4.Controllers
             return View(productList);
         }
 
+
         [HttpPost]
         [ActionName("Index")]
         public IActionResult IndexPost(IEnumerable<Product> products)
@@ -115,11 +123,13 @@ namespace ShopM4.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult InquiryConfirmation()
+        public IActionResult InquiryConfirmation(int id = 0)
         {
+            OrderHeader orderHeader = repositoryOrderHeader.FirstOrDefault(x => x.Id == id);
+
             HttpContext.Session.Clear();   // очистить полностью сессию
 
-            return View();
+            return View(orderHeader);
         }
 
         [HttpPost]
@@ -129,65 +139,119 @@ namespace ShopM4.Controllers
             var identityClaims = (ClaimsIdentity)User.Identity;
             var claim = identityClaims.FindFirst(ClaimTypes.NameIdentifier);
 
-           
-            // код для отправки сообщения
-            // combine
-            var path = webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString() +
-                "templates" + Path.DirectorySeparatorChar.ToString() + "Inquiry.html";
 
-            var subject = "New Order";
-
-            string bodyHtml = "";
-
-            using (StreamReader reader = new StreamReader(path))
+            if (User.IsInRole(PathManager.AdminRole))
             {
-                bodyHtml = reader.ReadToEnd();
-            }
+                // Work with ORDER
+                double totalPrice = 0;
 
-            string textProducts = "";
-            foreach (var item in productUserViewModel.ProductList)
-            {
-                textProducts += $"- Name: {item.Name}, ID: {item.Id}\n";
-            }
-
-            string body = string.Format(bodyHtml, productUserViewModel.ApplicationUser.FullName,
-                productUserViewModel.ApplicationUser.Email,
-                productUserViewModel.ApplicationUser.PhoneNumber,
-                textProducts
-            );
-
-            await emailSender.SendEmailAsync(productUserViewModel.ApplicationUser.Email, subject, body);
-            await emailSender.SendEmailAsync("viosagmir@gmail.com", subject, body);
-
-            // добавление данных в БД по заказу
-            QueryHeader queryHeader = new QueryHeader()
-            {
-                ApplicationUserId = claim.Value,
-                QueryDate = DateTime.Now,
-                FullName = productUserViewModel.ApplicationUser.FullName,
-                PhoneNumber = productUserViewModel.ApplicationUser.PhoneNumber,
-                Email = productUserViewModel.ApplicationUser.Email,
-                ApplicationUser = repositoryApplicationUser.FirstOrDefault(x => x.Id == claim.Value)
-            };
-
-            repositoryQueryHeader.Add(queryHeader);
-            repositoryQueryHeader.Save();
-
-
-            // сделать запись деталей - всех продуктов в БД
-            foreach (var item in productUserViewModel.ProductList)
-            {
-                QueryDetail queryDetail = new QueryDetail()
+                foreach (var item in productUserViewModel.ProductList)
                 {
-                    ProductId = item.Id,
-                    QueryHeaderId = queryHeader.Id,
-                    QueryHeader = queryHeader,
-                    Product = repositoryProduct.Find(item.Id)
+                    totalPrice += item.TempCount * item.Price;
+                }
+
+
+                OrderHeader orderHeader = new OrderHeader()
+                {
+                    AdminId = claim.Value,
+                    DateOrder = DateTime.Now,
+                    TotalPrice = totalPrice,
+                    Status = PathManager.StatusPending,
+                    FullName = productUserViewModel.ApplicationUser.FullName,
+                    Email = productUserViewModel.ApplicationUser.Email,
+                    Phone = productUserViewModel.ApplicationUser.PhoneNumber,
+                    City = productUserViewModel.ApplicationUser.City,
+                    Street = productUserViewModel.ApplicationUser.Street,
+                    House = productUserViewModel.ApplicationUser.House,
+                    Apartment = productUserViewModel.ApplicationUser.Apartment,
+                    PostalCode = productUserViewModel.ApplicationUser.PostalCode
                 };
 
-                repositoryQueryDetail.Add(queryDetail);
+
+                repositoryOrderHeader.Add(orderHeader);
+                repositoryOrderHeader.Save();
+
+
+                foreach (var product in productUserViewModel.ProductList)
+                {
+                    OrderDetail orderDetail = new OrderDetail()
+                    {
+                        OrderHeaderId = orderHeader.Id,
+                        ProductId = product.Id,
+                        Count = product.TempCount,
+                        PricePerUnit = (int)product.Price    // !!! fix need 
+                    };
+
+                    repositoryOrderDetail.Add(orderDetail);
+                }
+
+                repositoryOrderDetail.Save();
+
+                return RedirectToAction("InquiryConfirmation", new { orderHeader.Id });
             }
-            repositoryQueryDetail.Save();
+            else
+            {
+                // Work with QUERY
+
+                // код для отправки сообщения
+                // combine
+                var path = webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString() +
+                    "templates" + Path.DirectorySeparatorChar.ToString() + "Inquiry.html";
+
+                var subject = "New Query";
+
+                string bodyHtml = "";
+
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    bodyHtml = reader.ReadToEnd();
+                }
+
+                string textProducts = "";
+                foreach (var item in productUserViewModel.ProductList)
+                {
+                    textProducts += $"- Name: {item.Name}, ID: {item.Id}\n";
+                }
+
+                string body = string.Format(bodyHtml, productUserViewModel.ApplicationUser.FullName,
+                    productUserViewModel.ApplicationUser.Email,
+                    productUserViewModel.ApplicationUser.PhoneNumber,
+                    textProducts
+                );
+
+                await emailSender.SendEmailAsync(productUserViewModel.ApplicationUser.Email, subject, body);
+                await emailSender.SendEmailAsync("viosagmir@gmail.com", subject, body);
+
+                // добавление данных в БД по заказу
+                QueryHeader queryHeader = new QueryHeader()
+                {
+                    ApplicationUserId = claim.Value,
+                    QueryDate = DateTime.Now,
+                    FullName = productUserViewModel.ApplicationUser.FullName,
+                    PhoneNumber = productUserViewModel.ApplicationUser.PhoneNumber,
+                    Email = productUserViewModel.ApplicationUser.Email,
+                    ApplicationUser = repositoryApplicationUser.FirstOrDefault(x => x.Id == claim.Value)
+                };
+
+                repositoryQueryHeader.Add(queryHeader);
+                repositoryQueryHeader.Save();
+
+
+                // сделать запись деталей - всех продуктов в БД
+                foreach (var item in productUserViewModel.ProductList)
+                {
+                    QueryDetail queryDetail = new QueryDetail()
+                    {
+                        ProductId = item.Id,
+                        QueryHeaderId = queryHeader.Id,
+                        QueryHeader = queryHeader,
+                        Product = repositoryProduct.Find(item.Id)
+                    };
+
+                    repositoryQueryDetail.Add(queryDetail);
+                }
+                repositoryQueryDetail.Save();
+            }
 
 
             return RedirectToAction("InquiryConfirmation");
@@ -199,12 +263,12 @@ namespace ShopM4.Controllers
         {
             ApplicationUser applicationUser;
 
-            if (User.IsInRole(PathManager.AdminRole))
+            if (User.IsInRole(PathManager.AdminRole))   // работа админа в корзине
             {
-                // Корзина заполняется на основании существующего запроса
+                // корзина заполняется на основании существуещего запроса
                 if (HttpContext.Session.Get<int>(PathManager.SessionQuery) != 0)
                 {
-                    // Можем забрать данные из id запроса для юзера
+                    // можем забрать данные из id запроса для юзера
 
                     QueryHeader queryHeader = repositoryQueryHeader.FirstOrDefault(
                         x => x.Id == HttpContext.Session.Get<int>(PathManager.SessionQuery));
@@ -216,7 +280,7 @@ namespace ShopM4.Controllers
                         FullName = queryHeader.FullName
                     };
                 }
-                else   // корзина заполняется админом ДЛЯ юзера
+                else   // корзина заполняется админом ДЛЯ юзера 
                 {
                     applicationUser = new ApplicationUser();
                 }
@@ -231,6 +295,7 @@ namespace ShopM4.Controllers
                 applicationUser = repositoryApplicationUser.FirstOrDefault(
                     x => x.Id == claim.Value);
             }
+
 
             List<Cart> cartList = new List<Cart>();
 
@@ -251,7 +316,7 @@ namespace ShopM4.Controllers
             productUserViewModel = new ProductUserViewModel()
             {
                 //ApplicationUser = db.ApplicationUser.FirstOrDefault(x => x.Id == claim.Value),
-                ApplicationUser = applicationUser,
+                ApplicationUser = applicationUser
             };
 
             foreach (var item in cartList)
@@ -266,13 +331,13 @@ namespace ShopM4.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(IEnumerable<Product> products)
+        public IActionResult Update(List<Product> products)
         {
             List<Cart> cartList = new List<Cart>();
 
             foreach (var product in products)
             {
-                cartList.Add(new Cart
+                cartList.Add(new Cart()
                 {
                     ProductId = product.Id,
                     Count = product.TempCount

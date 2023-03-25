@@ -1,5 +1,14 @@
-﻿<div class="text-center">
+﻿@model ShopM4_Models.OrderHeader
+
+<div class="text-center">
     <h1>Information</h1>
 
-    <p>We sent the message to you!</p>
+    @if (Model != null)   // order
+    {
+        <h2>Order was created</h2>
+    }
+    else
+    {
+        <h2>Query was created</h2>
+    }
 </div>

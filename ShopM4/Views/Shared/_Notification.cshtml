@@ -1,6 +1,6 @@
-﻿@using ShopM4_Utility;
+﻿@using ShopM4_Utility
 
-@if (TempData["Success"] != null)
+@if (TempData[PathManager.Success] != null)
 {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!-- include toastr -->
@@ -9,7 +9,7 @@
     <script>toastr.success('@TempData[PathManager.Success]')</script>
 }
 
-@if (TempData["Error"] != null)
+@if (TempData[PathManager.Error] != null)
 {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!-- include toastr -->
@@ -17,4 +17,3 @@
 
     <script>toastr.error('@TempData[PathManager.Error]')</script>
 }
-
