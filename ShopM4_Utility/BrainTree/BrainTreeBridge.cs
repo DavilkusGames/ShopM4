@@ -22,7 +22,7 @@ namespace ShopM4_Utility.BrainTree
         public IBraintreeGateway CreateGateway()
         {
             return new BraintreeGateway(SettingsBrainTree.Environment,
-                SettingsBrainTree.MerchantId, SettingsBrainTree.PublicKey, SettingsBrainTree.PrivateKey)
+                SettingsBrainTree.MerchantId, SettingsBrainTree.PublicKey, SettingsBrainTree.PrivateKey);
         }
 
         public IBraintreeGateway GetGateWay()

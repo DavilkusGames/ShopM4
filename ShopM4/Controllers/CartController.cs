@@ -13,6 +13,7 @@ using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
 using ShopM4_DataMigrations.Repository.IRepository;
 using System.Net.NetworkInformation;
+using ShopM4_Utility.BrainTree;
 
 namespace ShopM4.Controllers
 {
@@ -35,11 +36,14 @@ namespace ShopM4.Controllers
         IRepositoryOrderHeader repositoryOrderHeader;
         IRepositoryOrderDetail repositoryOrderDetail;
 
+        IBrainTreeBridge brainTreeBridge;
+
         public CartController(IWebHostEnvironment webHostEnvironment,
             IEmailSender emailSender, IRepositoryProduct repositoryProduct,
             IRepositoryApplicationUser repositoryApplicationUser,
             IRepositoryQueryHeader repositoryQueryHeader, IRepositoryQueryDetail repositoryQueryDetail,
-            IRepositoryOrderHeader repositoryOrderHeader, IRepositoryOrderDetail repositoryOrderDetail)
+            IRepositoryOrderHeader repositoryOrderHeader, IRepositoryOrderDetail repositoryOrderDetail,
+            IBrainTreeBridge brainTreeBridge)
         {
             this.webHostEnvironment = webHostEnvironment;
             this.emailSender = emailSender;
@@ -50,6 +54,8 @@ namespace ShopM4.Controllers
 
             this.repositoryOrderHeader = repositoryOrderHeader;
             this.repositoryOrderDetail = repositoryOrderDetail;
+
+            this.brainTreeBridge = brainTreeBridge;
         }
 
 
@@ -284,6 +290,11 @@ namespace ShopM4.Controllers
                 {
                     applicationUser = new ApplicationUser();
                 }
+
+                // РАБОТА С ОПЛАТОЙ
+                var getWay = brainTreeBridge.GetGateWay();
+                var tokenClient = getWay.ClientToken.Generate();
+                ViewBag.TokenClient = tokenClient;
             }
             else    // работа юзера с корзиной
             {
