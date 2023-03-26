@@ -11,9 +11,10 @@ using ShopM4_DataMigrations.Data;
 using ShopM4_Models;
 using ShopM4_Models.ViewModels;
 using ShopM4_Utility;
+using ShopM4_Utility.BrainTree;
 using ShopM4_DataMigrations.Repository.IRepository;
 using System.Net.NetworkInformation;
-using ShopM4_Utility.BrainTree;
+using Braintree;
 
 namespace ShopM4.Controllers
 {
@@ -139,7 +140,8 @@ namespace ShopM4.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SummaryPost(ProductUserViewModel productUserViewModel)
+        public async Task<IActionResult> SummaryPost(IFormCollection collection,
+            ProductUserViewModel productUserViewModel)
         {
             // work with user
             var identityClaims = (ClaimsIdentity)User.Identity;
@@ -192,6 +194,26 @@ namespace ShopM4.Controllers
                 }
 
                 repositoryOrderDetail.Save();
+
+
+
+                string nonce = collection["payment_method_nonce"];
+
+                var request = new TransactionRequest
+                {
+                    Amount = 1,
+                    PaymentMethodNonce = nonce,
+                    OrderId = "1",
+                    Options = new TransactionOptionsRequest { SubmitForSettlement = true }  // автоматическое подтверждение
+                };
+
+                var getWay = brainTreeBridge.GetGateWay();
+
+                var resultTransaction = getWay.Transaction.Sale(request);
+
+                var id = resultTransaction.Target.Id;
+                var status = resultTransaction.Target.ProcessorResponseText;
+
 
                 return RedirectToAction("InquiryConfirmation", new { orderHeader.Id });
             }
@@ -291,6 +313,7 @@ namespace ShopM4.Controllers
                     applicationUser = new ApplicationUser();
                 }
 
+
                 // РАБОТА С ОПЛАТОЙ
                 var getWay = brainTreeBridge.GetGateWay();
                 var tokenClient = getWay.ClientToken.Generate();
@@ -358,6 +381,13 @@ namespace ShopM4.Controllers
             HttpContext.Session.Set(PathManager.SessionCart, cartList);
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Clear()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

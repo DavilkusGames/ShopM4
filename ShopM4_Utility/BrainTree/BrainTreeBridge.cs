@@ -1,10 +1,6 @@
-﻿using Braintree;
+﻿using System;
+using Braintree;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShopM4_Utility.BrainTree
 {
@@ -19,7 +15,7 @@ namespace ShopM4_Utility.BrainTree
             SettingsBrainTree = options.Value;
         }
 
-        public IBraintreeGateway CreateGateway()
+        public IBraintreeGateway CreateGateWay()
         {
             return new BraintreeGateway(SettingsBrainTree.Environment,
                 SettingsBrainTree.MerchantId, SettingsBrainTree.PublicKey, SettingsBrainTree.PrivateKey);
@@ -29,9 +25,10 @@ namespace ShopM4_Utility.BrainTree
         {
             if (gateway == null)
             {
-                gateway = CreateGateway();
+                gateway = CreateGateWay();
             }
             return gateway;
         }
     }
 }
+

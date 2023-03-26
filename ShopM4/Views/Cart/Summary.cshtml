@@ -103,6 +103,13 @@
         </h3>
     }
 
+    @if (User.IsInRole(ShopM4_Utility.PathManager.AdminRole))
+    {
+        <div class="checkout container">
+            <div id="dropin-container"></div>
+            <input id="nonce" name="payment_method_nonce" type="hidden"/>
+        </div>
+    }
 
 
     @if (User.IsInRole(ShopM4_Utility.PathManager.AdminRole))
@@ -132,33 +139,29 @@
             var tokenClient = "@ViewBag.TokenClient";
 
             var form = document.querySelector('#payment-form');
-            
+
             // подключение для braintree
-            braintree.popin.create({
-            }
-                authorization: CLIENT_TOKEN_FROM_SERVER,
-                container: "#dropin-containter"
-                }, 
-                
-                // первый параметр для ошибки, второй - экземпляр подключение
-                function (error, dropinInstance) => {
-                    // тут происходит обработка событий
-                    form.addEventListener('submit', function () {
-                        // блочим автоматическую передачу формы
-                        event.preventDefault();
+            braintree.dropin.create({
+                authorization: tokenClient,
+                container: '#dropin-container'
+            },
 
-                        // добавить nonce в форму и затем отправить ее
-                        dropInInstance.requestPaymentMethod(function(err, payload) {
-                            // отправить nonce на наш сервер
-                            document.querySelector('#nonce').value = payload.nonce;
+            // первый параметр для ошибки, второй - экземпляр подключения
+            function (error, dropinInstance) {
+                // тут происходит обработка события
+                form.addEventListener('submit', function () {
+                    // блочим автоматическую передачу формы
+                    event.preventDefault();
 
-                            form.submit();
-                        })
+                    // добавить nonce в форму и затем отправить ее
+                    dropinInstance.requestPaymentMethod(function (err, payload) {
+                        // отправить nonce на наш сервер
+                        document.querySelector('#nonce').value = payload.nonce;
+
+                        form.submit();
                     })
-                }
-            );
+                })
+            });  
         </script>
-
-
     }
 }
