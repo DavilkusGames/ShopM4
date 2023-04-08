@@ -120,7 +120,21 @@ namespace ShopM4.Controllers
             OrderHeader orderHeader = repositoryOrderHeader.
                 FirstOrDefault(x => x.Id == OrderViewModel.OrderHeader.Id);
 
-			var getway = brainTreeBridge.GetGateWay();
+			var gateWay = brainTreeBridge.GetGateWay();
+
+			// get transaction
+			Transaction transaction = gateWay.Transaction.Find(orderHeader.TransactionId);
+
+			// условия при которых не возвращаем
+			if (transaction.Status == TransactionStatus.AUTHORIZED ||
+				transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
+			{
+				gateWay.Transaction.Void(orderHeader.TransactionId);
+			}
+            else // возврат средств
+            {
+				var res = gateWay.Transaction.Refund(orderHeader.TransactionId);
+			}
 
 			return View();
         }
