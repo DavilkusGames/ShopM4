@@ -315,6 +315,9 @@ namespace ShopM4_DataMigrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateExecution")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateOrder")
                         .HasColumnType("datetime2");
 
@@ -348,6 +351,10 @@ namespace ShopM4_DataMigrations
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

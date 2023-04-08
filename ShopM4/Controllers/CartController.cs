@@ -383,6 +383,7 @@ namespace ShopM4.Controllers
             return RedirectToAction("Index");
         }
 
+
         public IActionResult Clear()
         {
             HttpContext.Session.Clear();

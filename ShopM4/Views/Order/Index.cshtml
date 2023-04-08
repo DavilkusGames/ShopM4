@@ -1,5 +1,56 @@
-﻿<h1>Order Page</h1>
+﻿@model ShopM4_Models.ViewModels.OrderViewModel
+
+
+<h1>Order Page</h1>
+
+
+<form method="get">
+    <div class="row" style="padding: 5px">
+        <div class="col-2">
+            @Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @placeholder = "Input Name" } })
+        </div>
+
+        <div class="col-2">
+            @Html.Editor("searchEmail", new { htmlAttributes = new { @class = "form-control", @placeholder = "Input Email" } })
+        </div>
+
+        <div class="col-2">
+            @Html.Editor("searchPhone", new
+            {
+                htmlAttributes =
+                                        new { @class = "form-control", @placeholder = "Input Phone" }
+            })
+        </div>
+
+        <div class="col-2">
+            @Html.DropDownListFor(x => x.Status, Model.StatusList, "Choose Status", new { @class = "form-control" })
+        </div>
+
+        <div class="col-4">
+            <button type="submit" class="btn btn-info form-control">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
 
 <div>
-    <ejs-calendar id="calendar"></ejs-calendar>
+    <ejs-grid id="Grid" dataSource="@Model.OrderHeaderList" allowFiltering="true" allowSorting="true" allowPaging="true">
+        <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+        <e-grid-loadingIndicator indicatorType="Shimmer"></e-grid-loadingIndicator>
+        <e-grid-pagesettings pageSize="2"></e-grid-pagesettings>
+        <e-grid-columns>
+            <e-grid-column field="Id" width="60" headerText="Id" isPrimaryKey="true"></e-grid-column>
+            <e-grid-column field="FullName" headerText="Full Name"></e-grid-column>
+            <e-grid-column field="Email" headerText="Email"></e-grid-column>
+            <e-grid-column field="Phone" headerText="Phone Number"></e-grid-column>
+            <e-grid-column field="Status" headerText="Order Status"></e-grid-column>
+            <e-grid-column field="DateOrder" headerText="Date Order" customFormat="@(new {type = "date", format = "dd.MM.yyyy"})">
+            </e-grid-column>
+
+            <e-grid-column field="Id" headerText=""
+                           template="<a href = 'Order/Details/${Id}' class = 'btn btn-primary'> GO </a>"></e-grid-column>
+
+        </e-grid-columns>
+    </ejs-grid>
 </div>

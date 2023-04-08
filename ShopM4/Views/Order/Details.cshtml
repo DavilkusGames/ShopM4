@@ -1,0 +1,181 @@
+﻿@model ShopM4_Models.ViewModels.OrderHeaderDetailViewModel
+
+<form method="post">
+
+    <input asp-for="OrderHeader.Id" hidden/>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm">
+                <h1>Details</h1>
+            </div>
+            <div class="col-sm">
+                <a asp-controller="Order" asp-action="Index" class="btn form-control btn-primary">Return to Orders</a>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- Details Order -->
+            <div class="col-sm">
+                <div class="row">
+                    <h2>Details Order</h2>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">Full Name: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.FullName" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.FullName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">Email: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.Email" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">Phone: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.Phone" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.Phone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">City: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.City" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">Street: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.Street" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.Street" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">House: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.House" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.House" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">Apartment: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.Apartment" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.Apartment" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">PostalCode: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
+                        <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">DateOrder: </div>
+                    <div class="col-9">
+                        <input value="@Model.OrderHeader.DateOrder.ToShortDateString()" type="text"
+                               class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">Date Execution: </div>
+                    <div class="col-9">
+                        <input value="@Model.OrderHeader.DateExecution.ToShortDateString()" type="text"
+                               class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">ID Transaction: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.TransactionId" type="text" class="form-control"
+                               readonly/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">Status: </div>
+                    <div class="col-9">
+                        <input asp-for="OrderHeader.Status" type="text" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-sm">
+                <div class="row">
+                    <h2>Product Details</h2>
+                </div>
+
+                @foreach (var item in Model.OrderDetail)
+                {
+                    <div class="row bg-light m-2">
+                        <h5>Product Name: @item.Product.Name</h5>
+
+                        <div class="col-sm">
+                            Price: @item.PricePerUnit
+                        </div>
+                        <div class="col-sm">
+                            Count: @item.Count
+                        </div>
+                        <div class="col-sm">
+                            Total: @(item.PricePerUnit * item.Count)
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-sm">
+                        <h2> Final Total: @Model.OrderHeader.TotalPrice </h2>
+                    </div>
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="row m-2">
+                    <div class="col-sm">
+                        <input asp-action="StartInProcessing" type="submit" value="In Processing" class="btn form-control btn-primary" />
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col-sm">
+                        <input type="submit" value="Order Done" class="btn form-control btn-primary" />
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col-sm">
+                        <input type="submit" value="Cancel Order" class="btn form-control btn-primary" />
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</form>

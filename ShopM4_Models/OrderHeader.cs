@@ -39,6 +39,9 @@ namespace ShopM4_Models
         [Required]
         public string PostalCode { get; set; }
 
+        public string TransactionId { get; set; }
+
+        public DateTime DateExecution { get; set; }
     }
 }
 

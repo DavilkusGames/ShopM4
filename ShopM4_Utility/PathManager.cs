@@ -23,9 +23,11 @@ namespace ShopM4_Utility
         public const string StatusPending = "Pending";     // в ожидании
         public const string StatusAccepted = "Accepted";   // утвержден
         public const string StatusDenied = "Denied";       // отменен
+        public const string StatusInProcess = "In Process";       // в процессе обработки
+        public const string StatusOrderDone = "Order Done";  // завершен
 
-        public static IEnumerable<string> StatusList = 
-            new List<string> { StatusPending, StatusAccepted, StatusDenied };
+        public static IEnumerable<string> StatusList =
+            new List<string>() { StatusPending, StatusAccepted, StatusInProcess, StatusDenied };
     }
 }
 
