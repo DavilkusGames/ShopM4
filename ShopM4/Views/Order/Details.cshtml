@@ -150,11 +150,12 @@
 
 
                 <!-- BUTTONS -->
+
                 @if (Model.OrderHeader.Status == ShopM4_Utility.PathManager.StatusAccepted)
                 {
                     <div class="row m-2">
                         <div class="col-sm">
-                            <input asp-action="StartInProcessing" type="submit" value="In Processing" class="btn form-control btn-primary"/>
+                            <input asp-action="StartInProcessing" type="submit" value="In Processing" class="btn form-control btn-primary" />
                         </div>
                     </div>
                 }
@@ -163,19 +164,22 @@
                 {
                     <div class="row m-2">
                         <div class="col-sm">
-                            <input asp-action="StartOrderDone" type="submit" value="Order Done" class="btn form-control btn-primary"/>
+                            <input asp-action="StartOrderDone" type="submit" value="Order Done" class="btn form-control btn-primary" />
                         </div>
                     </div>
                 }
-a
+
                 @if (Model.OrderHeader.Status != ShopM4_Utility.PathManager.StatusDenied)
                 {
                     <div class="row m-2">
                         <div class="col-sm">
-                            <input asp-action="StartOrderCancel" type="submit" value="Cancel Order" class="btn form-control btn-primary" />
+                            <input asp-action="StartOrderCancel" type="submit" value="Cancel Order"
+                                   class="btn form-control btn-primary" />
                         </div>
                     </div>
                 }
+
+
 
             </div>
 

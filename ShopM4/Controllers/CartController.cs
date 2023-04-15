@@ -219,6 +219,7 @@ namespace ShopM4.Controllers
                 orderHeader.TransactionId = id;
                 repositoryOrderHeader.Save();
 
+
                 return RedirectToAction("InquiryConfirmation", new { orderHeader.Id });
             }
             else
